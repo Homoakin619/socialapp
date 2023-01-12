@@ -34,7 +34,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['*']
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://socialapp.up.railway.app/'
+    'https://socialapp.up.railway.app'
 ]
 
 LOGIN_URL = 'account_login'
