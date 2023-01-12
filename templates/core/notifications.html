@@ -1,0 +1,72 @@
+{% extends 'core/base.html' %} 
+
+{% load static %}
+{% load content_view %}
+{% block extra_css %} 
+<link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+<style>
+    .notification {
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %} 
+<main>
+    
+
+<!-- <div class="post">
+    {% for notification in range %}
+    <a href="" class="notification">
+        <img src="/static/core/images/img.jpg" alt="">
+        <div class="notification-content">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Officia ea facere consequuntur? Porro accusamus cupiditate, beatae libero neque quia mollitia.</p>
+        </div>
+    </a>
+    {% endfor %}
+    
+    
+</div> -->
+<div class="post">
+   <div class="notifications">
+    {% for notification in notifications %} 
+       <a role="button" class="notification" {% if notification.is_read == False %} style="background: #D4E9FD;" {% endif %} id="{{ notification.pk }}" >
+        {{ notification|get_content }}
+       </a>
+    {% endfor %}
+   </div>
+</div>
+</main>
+{% endblock %}
+{% block extra_script %} 
+<script>
+
+    const notifications = document.getElementsByClassName('notification')
+    for (notification of notifications) {
+        notification.addEventListener('click',runProcess)
+    }
+    function runProcess() {
+        let id = this.id
+        let urL = `http://localhost:8000/process_notification/`
+        let data = {value:id}
+        // Example POST method implementation:
+        fetch(urL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(data),
+            })
+            .then((response) => response)
+            .then((data) => {
+                console.log('Success:', data);
+                window.location.href = `http://localhost:8000/post/${id}`
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    }
+    
+</script>
+{% endblock %}

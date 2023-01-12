@@ -1,0 +1,99 @@
+{% extends 'core/base.html' %}
+
+
+{% block content %}
+<main class="body">
+    <header class="index_nav">
+        <a href="" class="brand">MAJMAU-L-ULOOM</a>
+        <div>
+            <a onclick="showLogin()" class="navig">Login</a>
+            <a onclick="showRegister()" class="navig">Register</a>
+        </div>
+    </header>
+    <section class="banner">
+        <div class="left">
+            <h1 class="banner-head">Welcome to Majmau-l-uloom</h1>
+            <p class="banner-text">A place where knowledge is being sold and bought all for free.The first of its kind!</p>
+        </div>
+
+        <div class="right">
+            <form action="" method="post" id="login-form">
+                {% csrf_token %}
+                <div class="form-header">
+                    <h3>Enter Login Details</h3>
+                </div>
+                <div class="form-row">
+                    <label for="id_username">Username</label>
+                    <input type="text" name="username" id="id_username">
+                </div>
+                <div class="form-row">
+                    <label for="id_password">Password</label>
+                    <input type="password" name="password" id="id_password">
+                </div>
+                <input type="hidden" name="form_type" value="login">
+                <input type="submit" value="Login">
+                <div class="form-footer">
+                    <small>Forgot Password? <span id="register" role="button" >Click Here</span></small>
+                </div>
+            </form>
+
+            <form action="" method="post" id="register-form" style="display: none;">
+                {% csrf_token %}
+                <div class="form-header">
+                    <h3>Enter Registration Details</h3>
+                </div>
+                <div class="form-row">
+                    <label for="id_username">Username</label>
+                    <input type="text" name="username" id="id_username">
+                </div>
+                <div class="form-row">
+                    <label for="id_firstname">Firstname</label>
+                    <input type="text" name="firstname" id="id_firstname">
+                </div>
+                <div class="form-row">
+                    <label for="id_lastname">Lastname</label>
+                    <input type="text" name="lastname" id="id_lastname">
+                </div>
+                <div class="form-row">
+                    <label for="id_email">Email</label>
+                    <input type="email" name="email" id="id_email">
+                </div>
+                <div class="form-row">
+                    <label for="id_password">Password</label>
+                    <input type="password" name="password" id="id_password">
+                </div>
+                <div class="form-row">
+                    <label for="id_password2">Confirm Password</label>
+                    <input type="password" name="password2" id="id_password2">
+                </div>
+                <input type="submit" value="Register">
+                <div class="form-footer">
+                    <small>Already have an account? <span id="login" role="button" >Login</span></small>
+                </div>
+            </form>
+        </div>
+    </section>
+</main>
+
+{% endblock %}
+
+{% block extra_script %}
+<script>
+    let loginForm = document.getElementById('login-form');
+    let registerForm = document.getElementById('register-form');
+
+    function showLogin() {    
+        loginForm.style.display = 'block'
+        registerForm.style.display = 'none';
+    }
+
+    function showRegister() {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+    }
+    document.getElementById('login').addEventListener('click',showLogin);
+    document.getElementById('register').addEventListener('click',showRegister);
+    document.getElementById('general-header').style.display = 'none';
+</script>
+
+{% endblock extra_script %}

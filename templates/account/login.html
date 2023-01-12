@@ -1,0 +1,87 @@
+{% extends "account/base.html" %}
+{% load static %}
+
+{% block extra_head %} 
+<link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+<style>
+    #msg {
+        display: none;
+    }
+</style>
+{% endblock %}
+
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
+
+{% block content %}
+<main class="body">
+    <header class="index_nav">
+        <a href="" class="brand">MAJMAU-L-ULOOM</a>
+        <div>
+            <a href="{% url 'account_login' %}" class="navig">Login</a>
+            <a href="{% url 'account_signup' %}" class="navig">Register</a>
+        </div>
+    </header>
+
+    <section class="banner">
+        <!-- <div class="login-or">{% trans 'or' %}</div> -->
+        <div class="left">
+            <h1 class="banner-head">Welcome to Majmau-l-uloom</h1>
+            <p class="banner-text">A place where knowledge is being sold and bought all for free.The first of its kind!</p>
+        </div>
+
+        <div class="right">
+            <form class="login" method="POST" action="{% url 'account_login' %}">
+                {% csrf_token %}
+                <div class="form-header">
+                    <h3>Enter Login Details</h3>
+                </div>
+
+                <div class="form-row">
+                    <label for="id_username">Username</label>
+                    {{ form.login }}
+                    {% if form.login.errors %}
+                    {% for error in form.login.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <div class="form-row">
+                    <label for="id_password">Password</label>
+                    {{ form.password }}
+                    {% if form.password.errors %}
+                    {% for error in form.password.errors %}
+                    <span>{{ error }}</span>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+
+                <input type="hidden" name="form_type" value="login">
+                {% if form.errors %}
+                {% for field in form %}
+                    {% for error in field.errors %}
+                        <div class="alert alert-error">
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                {% for error in form.non_field_errors %}
+                    <div>
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                {% endfor %}
+                {% endif %}
+
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+                <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+                <button class="primaryAction" type="submit">{% trans "Sign In" %}</button>
+            </form>
+        </div>
+    </section>
+</main>
+{% endblock %}

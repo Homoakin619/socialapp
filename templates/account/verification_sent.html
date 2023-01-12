@@ -1,0 +1,40 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% load i18n %}
+{% block extra_head %} 
+  <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+
+  <style>
+    .cen {
+        width: 650px;
+        margin: auto;
+        padding: 10px 20px;
+        background: #f1f1f1;
+        position: absolute;
+        top: 25%;
+        left: 25%;
+    }
+    form {
+        width: 70%;
+        margin-top: 40px;
+    }
+    main {
+        color: #000;
+    }
+  </style>
+{% endblock %}
+
+{% block head_title %}{% trans "Verify Your E-mail Address" %}{% endblock %}
+
+{% block content %}
+<main class="body">
+    <header class="index_nav">
+        <a href="" class="brand">MAJMAU-L-ULOOM</a>
+    </header>
+    <div class="cen">
+        <h1>{% trans "E-mail Verification Sent" %}</h1>
+
+        <p>{% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. If you do not see the verification e-mail in your main inbox, check your spam folder. Please contact us if you do not receive the verification e-mail within a few minutes.{% endblocktrans %}</p>
+    </div>
+</main>
+{% endblock %}

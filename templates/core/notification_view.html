@@ -1,0 +1,103 @@
+
+{% extends 'core/base.html' %}
+{% block content %} 
+    <main>
+        <div class="post">
+    
+            <div class="post-head">
+                {% if post.user.profile.image %}
+                <div class="image"> <a href="{% url 'profile' post.user.pk %}"> <img src="{{ post.user.profile.image.url }}" alt=""></a> </div>
+                {% else %}
+                <div class="hel"><a href="{% url 'profile' post.user.pk %}"> <div class="def-image"></div></a></div>
+                {% endif %}
+                <div class="name">{{ post.user.username }}  </div>
+            </div>
+            <div class="post-body">
+                {% if post.image %} 
+                    <div class="img-div"><img src="{{ post.image.url }}" alt=""></div>
+                {% endif %}
+                <div><p>{{ post.content }}</p></div>
+                <div>
+                    <small>{{ post.created }}</small>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="post-footer">
+                <a role="button" class="comment" >
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16">
+                            <path fill="#000" d="M3 11.2c0 .1 0 .1 0 0 0 .1 0 .1 0 0zM8.3 1C3.9 1 0 3.6 0 6.6c0 2 1.1 3.7 3 4.7s0 .1 0 .1c-.1 1.3-.9 1.7-.9 1.7L.3 14h2c2.5 0 4.3-1.1 5.1-1.9h.8c4.3 0 7.8-2.5 7.8-5.6S12.6 1 8.3 1zm-.1 10.1H7.1l-.2.2c-.5.5-1.6 1.4-3.3 1.7.3-.5.5-1.1.5-2v-.3l-.3-.1C2 9.7 1 8.3 1 6.6 1 4.2 4.5 2 8.3 2 12 2 15 4 15 6.6c0 2.4-3.1 4.5-6.8 4.5z" class="color444 svgShape"/><path fill="#ff8066" d="M6 7a1 1 0 11-2 0 1 1 0 012 0zM9 7a1 1 0 11-2 0 1 1 0 012 0zM12 7a1 1 0 11-2 0 1 1 0 012 0z" class="color444 svgShape"/>
+                        </svg>
+                    </svg>
+                    <span>Comment</span>
+                </a>
+                <a role="button" class="like"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+                            <path fill="#000" d="M6.28001656,3.46389584e-14 C6.91001656,0.0191596721 7.52001656,0.129159672 8.11101656,0.330159672 L8.11101656,0.330159672 L8.17001656,0.330159672 C8.21001656,0.349159672 8.24001656,0.370159672 8.26001656,0.389159672 C8.48101656,0.460159672 8.69001656,0.540159672 8.89001656,0.650159672 L8.89001656,0.650159672 L9.27001656,0.820159672 C9.42001656,0.900159672 9.60001656,1.04915967 9.70001656,1.11015967 C9.80001656,1.16915967 9.91001656,1.23015967 10.0000166,1.29915967 C11.1110166,0.450159672 12.4600166,-0.00984032788 13.8500166,3.46389584e-14 C14.4810166,3.46389584e-14 15.1110166,0.0891596721 15.7100166,0.290159672 C19.4010166,1.49015967 20.7310166,5.54015967 19.6200166,9.08015967 C18.9900166,10.8891597 17.9600166,12.5401597 16.6110166,13.8891597 C14.6800166,15.7591597 12.5610166,17.4191597 10.2800166,18.8491597 L10.2800166,18.8491597 L10.0300166,19.0001597 L9.77001656,18.8391597 C7.48101656,17.4191597 5.35001656,15.7591597 3.40101656,13.8791597 C2.06101656,12.5301597 1.03001656,10.8891597 0.390016562,9.08015967 C-0.739983438,5.54015967 0.590016562,1.49015967 4.32101656,0.269159672 C4.61101656,0.169159672 4.91001656,0.0991596721 5.21001656,0.0601596721 L5.21001656,0.0601596721 L5.33001656,0.0601596721 C5.61101656,0.0191596721 5.89001656,3.46389584e-14 6.17001656,3.46389584e-14 L6.17001656,3.46389584e-14 Z M15.1900166,3.16015967 C14.7800166,3.01915967 14.3300166,3.24015967 14.1800166,3.66015967 C14.0400166,4.08015967 14.2600166,4.54015967 14.6800166,4.68915967 C15.3210166,4.92915967 15.7500166,5.56015967 15.7500166,6.25915967 L15.7500166,6.25915967 L15.7500166,6.29015967 C15.7310166,6.51915967 15.8000166,6.74015967 15.9400166,6.91015967 C16.0800166,7.08015967 16.2900166,7.17915967 16.5100166,7.20015967 C16.9200166,7.18915967 17.2700166,6.86015967 17.3000166,6.43915967 L17.3000166,6.43915967 L17.3000166,6.32015967 C17.3300166,4.91915967 16.4810166,3.65015967 15.1900166,3.16015967 Z" class="color200E32 svgShape" transform="translate(2 2.5)"/>
+                        </svg>
+                    </svg>
+                    <span>Like</span>
+                </a>
+            </div>
+            <div>
+                <form action="" method="post" class="commentForms">
+                    {% csrf_token %}
+                    {{ comment_form.content }}
+                    <input type="text" name="comment" value="true" hidden>
+                    <input type="text" name="post_id" value="{{ post.id }}" hidden>
+                    <button class="comment_btn" type="submit">Comment</button>
+                </form>
+            </div>
+
+            <div class="commentspace">
+                <div class="post-head">
+                    {% if comment.user.profile.image %}
+                    <div class="image"> <a href="{% url 'profile' post.user.pk %}"> <img src="{{ comment.user.profile.image.url }}" alt=""></a> </div>
+                    {% else %}
+                    <div class="hel"><a href="{% url 'profile' post.user.pk %}"> <div class="def-image"></div></a></div>
+                    {% endif %}
+                    <div class="name">{{ comment.user.username }}  </div>
+                </div>
+                <div class="post-body">
+                    {% if comment.image %} 
+                        <div class="img-div"><img src="{{ post.image.url }}" alt=""></div>
+                    {% endif %}
+                    <div><p>{{ comment.content }}</p></div>
+                    <div>
+                        <small>{{ comment.created_at }}</small>
+                    </div>
+                </div>
+            </div>
+
+            {% if post.comment_set.all %} 
+            <span role="button" class="showcomment" >Show All Comments</span>
+            <div class="comment-space">
+                <span role="button" class="hide-comment" >Hide Comments</span>
+                {% for comment in post.comment_set.all %}
+                <div class="post-head">
+                    {% if comment.user.profile.image %}
+                    <div class="image"> <a href="{% url 'profile' post.user.pk %}"> <img src="{{ comment.user.profile.image.url }}" alt=""></a> </div>
+                    {% else %}
+                    <div class="hel"><a href="{% url 'profile' post.user.pk %}"> <div class="def-image"></div></a></div>
+                    {% endif %}
+                    <div class="name">{{ comment.user.username }}  </div>
+                </div>
+                <div class="post-body">
+                    {% if comment.image %} 
+                        <div class="img-div"><img src="{{ post.image.url }}" alt=""></div>
+                    {% endif %}
+                    <div><p>{{ comment.content }}</p></div>
+                    <div>
+                        <small>{{ comment.created_at }}</small>
+                    </div>
+                </div>
+                <hr style="width:90%;margin:auto;margin-top: 5px">
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>
+    </main>    
+
+{% endblock %}

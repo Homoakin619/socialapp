@@ -1,0 +1,146 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}  {% endblock %}</title>
+
+    {% if request.user.is_authenticated %}
+    <link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'chat/css/style.css' %}">
+    {% else %}
+    <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+    {% endif %}
+   
+    {% block extra_css %} 
+
+    {% endblock %}
+</head>
+<body>
+    {% include 'core/navbar.html' %}
+    {% block content %}
+    
+
+    {% endblock %}
+    
+    <div class="to-top" role="button" onclick="goTop()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="56" height="56" fill="#ff6347" class="bi bi-arrow-up-circle-fill" viewBox="0 0 16 16">
+            <path d="M16 8A8 8 0 1 0 0 8a8 8 0 0 0 16 0zm-7.5 3.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V11.5z"/>
+          </svg>
+    </div>
+<script>
+
+    let mybutton = document.getElementsByClassName("to-top")[0];
+
+    // When the user scrolls down 20px from the top of the document, show the button
+    window.onscroll = function() {scrollFunction()};
+
+    function scrollFunction() {
+    if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+        mybutton.style.display = "block";
+    } else {
+            mybutton.style.display = "none";
+            }
+        }
+
+    function goTop() {
+        document.body.scrollTop = 0;
+        document.documentElement.scrollTop = 0;
+    }
+
+    let comments = document.getElementsByClassName("commentForms");
+    let commentBtns = document.getElementsByClassName("comment");
+    let showCommentsBtns = document.getElementsByClassName('showcomment');
+    let commentSpaces = document.getElementsByClassName('comment-space');
+    let hideCommentBtns = document.getElementsByClassName('hide-comment');
+    
+    for (const comment in Object.keys(comments)) {
+        comments[comment].setAttribute('id',String(comment));
+    }
+
+    for (const btn in Object.keys(commentBtns)) {
+        commentBtns[btn].setAttribute('id',String(btn));
+    }
+
+    for (const btn in Object.keys(commentBtns)) {
+        commentBtns[btn].onclick = makeComment;
+    }
+
+    // Functionality for show comment and hide comment
+
+    for (const btn in Object.keys(showCommentsBtns)) {
+        showCommentsBtns[btn].setAttribute('id',String(btn));
+        showCommentsBtns[btn].onclick = showComments;
+    }
+
+    for (const space in Object.keys(commentSpaces)) {
+        commentSpaces[space].setAttribute('id',String(space));
+    }
+
+    for (const hide in Object.keys(hideCommentBtns)) {
+        hideCommentBtns[hide].setAttribute('id',String(hide));
+        hideCommentBtns[hide].onclick = hideComments;
+    }
+
+
+
+    function hideComments(something) {
+        let spaceID = Number(this.id)
+        for (const space in Object.keys(commentSpaces)) {
+            var ispace = commentSpaces[space].getAttribute('id');
+            if (Number(ispace) == spaceID) {
+                let targ = commentSpaces[space];
+                targ.style.display = "none";
+                try {
+                    single_comment = document.getElementsByClassName('commentspace')[0]
+                    single_comment.style.display = "block"
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        }
+    }
+    
+    function showComments(something) {
+        let spaceID = Number(this.id)
+        for (const space in Object.keys(commentSpaces)) {
+            var ispace = commentSpaces[space].getAttribute('id');
+            if (Number(ispace) == spaceID) {
+                let targ = commentSpaces[space];
+                targ.style.display = "block";
+                try {
+                    single_comment = document.getElementsByClassName('commentspace')[0]
+                    single_comment.style.display = "none"
+                } catch (error) {
+                    console.log(error)
+                }
+            }
+        }
+    }
+
+    function makeComment(btnid) {
+        let bId = Number(this.id)
+        for (const comment in Object.keys(comments)) {
+            var mid = comments[comment].getAttribute('id');
+            if (Number(mid) == bId) {
+                let pos = comments[comment]
+                pos.style.display = "block";
+                window.onmouseup = function(event) {
+                    if (!pos.contains(event.target) ) {
+                        pos.style.display = "none";
+                    }
+                }
+                
+            }
+        }
+     
+    }
+
+    
+</script>
+{% block extra_script %}
+{% endblock extra_script %}
+</body>
+</html>

@@ -1,0 +1,566 @@
+{% extends 'core/base.html' %}
+{% load static %}
+
+{% block extra_css %} 
+<link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+<style>
+    
+#toggle-notification,#chat_user {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+#toggle-notification svg,#chat_user svg{
+    color: #f1f1f1;
+    width: 25px;
+    height: 25px;
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<main>
+
+    <div class="profile-modal" id="modal" style="display: none;">
+        <span class="close">&times;</span>
+        <div><h3>Edit Profile</h3></div>
+        
+        <form action="" method="post" >
+            {% csrf_token %} 
+            <div>
+                <label for="id_first_name">First name:</label>
+                {{ profile_form.first_name }}
+            </div>
+
+            <div>
+                <label for="id_last_name">Last name:</label>
+                {{ profile_form.last_name }}
+            </div>
+
+            <div>
+                <label for="id_About">About:</label>
+                {{ profile_form.about }}
+            </div>
+    
+            <input type="hidden" name="profile" value="profile">
+            <input type="submit" id="create_post" style="width: 60%;" value="Save Data">
+        </form>
+    </div>
+
+
+    <section class="main-profile-section">
+        <div class="top-btns">
+            <button class="edit-profile" id="modal1" role="button">Edit Profile</button>
+            
+            <button id="toggle-notification" >
+                {% if status %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-slash" viewBox="0 0 16 16">
+                    <path d="M5.164 14H15c-.299-.199-.557-.553-.78-1-.9-1.8-1.22-5.12-1.22-6 0-.264-.02-.523-.06-.776l-.938.938c.02.708.157 2.154.457 3.58.161.767.377 1.566.663 2.258H6.164l-1 1zm5.581-9.91a3.986 3.986 0 0 0-1.948-1.01L8 2.917l-.797.161A4.002 4.002 0 0 0 4 7c0 .628-.134 2.197-.459 3.742-.05.238-.105.479-.166.718l-1.653 1.653c.02-.037.04-.074.059-.113C2.679 11.2 3 7.88 3 7c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0c.942.19 1.788.645 2.457 1.284l-.707.707zM10 15a2 2 0 1 1-4 0h4zm-9.375.625a.53.53 0 0 0 .75.75l14.75-14.75a.53.53 0 0 0-.75-.75L.625 15.625z"/>
+                </svg>
+                {% else %}
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                </svg>
+                {% endif %}
+            </button>
+            
+            <button id="chat_user" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chat-right-text" viewBox="0 0 16 16">
+                    <path d="M2 1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h9.586a2 2 0 0 1 1.414.586l2 2V2a1 1 0 0 0-1-1H2zm12-1a2 2 0 0 1 2 2v12.793a.5.5 0 0 1-.854.353l-2.853-2.853a1 1 0 0 0-.707-.293H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12z"/>
+                    <path d="M3 3.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zM3 6a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9A.5.5 0 0 1 3 6zm0 2.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5z"/>
+                </svg>
+            </button>
+            <!-- <input value="{{ profile.id }}" id="profile_id" hidden> -->
+        </div>
+        <div class="image-left">
+            {% if profile.profile.image %} 
+            <!-- <span width="150" height="150" style="border-radius: 50%;background-color: ;"></span> -->
+            <img src="{{ profile.profile.image.url }}" alt="" width="150" height="150" style="border-radius: 50%;" >
+            {% else %}
+            <img src="/static/core/images/img.jpg" alt="" width="150" height="150" style="border-radius: 50%;" >
+            {% endif %}
+            
+            {% if request.user == profile %}
+            <form action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ image_form.image }}
+                <label for="id_image" class="edit-btn">
+                    Edit
+                </label>
+                <input type="text" value="image" name="img" hidden>
+                <button id="img_btn" type="submit">Save</button>
+                
+            </form>
+            {% endif %}
+            
+        </div>
+        <div class="about-right">
+            <ul>
+                <li>{{ profile.first_name }} {{ profile.last_name }}</li>
+                <li>@ {{ profile.username }}</li>
+                <li>{{ profile.profile.about }}</li>
+                <li> {% if profile.profile.is_ustaz %} Ustaz {% else %} General User {% endif %}</li>
+                
+            </ul>
+        </div>
+        {% if request.user == user %}
+        <div class="create-post" role="button" id="open_post">
+            <div style="width: 25px;height: 25px;">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><g data-name="Layer 51">
+                    <path fill="#fff" d="M16 2a14 14 0 1 0 14 14A14 14 0 0 0 16 2Zm0 26a12 12 0 1 1 12-12 12 12 0 0 1-12 12Z"/>
+                    <path fill="#fff" d="M17 15V8a1 1 0 0 0-2 0v7H8a1 1 0 0 0 0 2h7v7a1 1 0 0 0 2 0v-7h7a1 1 0 0 0 0-2Z"/></g>
+                </svg>
+            </div>
+            <h4>Create New Post</h4>
+        </div>
+        {% endif %}
+    </section>
+
+    <div class="" id="post_form_modal" style="display: none;padding-bottom: 10px;">
+        <span class="close">&times;</span>
+        <form enctype="multipart/form-data" method="post">
+            {% csrf_token %}
+            {{ form.content }}
+            <div class="post-bottom">
+                <div>
+                    <label for="cars">Post Tag</label>
+                    {{ form.tag }}
+                </div>
+                <div>
+                    {{ form.image }}
+                    <label for="id_image" style="cursor: pointer;">
+                        <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" width="30" height="30">
+                            <path fill="#ff6347" d="M13.5,6C12.7,6,12,6.7,12,7.5S12.7,9,13.5,9S15,8.3,15,7.5S14.3,6,13.5,6z M19,2H5C3.3,2,2,3.3,2,5v14c0,1.7,1.3,3,3,3h14
+                            c1.7,0,3-1.3,3-3V5C22,3.3,20.7,2,19,2z M20,13.9L18.1,12c-1.2-1.1-3.1-1.1-4.2,0L13,12.9L10.1,10c-1.2-1.1-3.1-1.1-4.2,0L4,11.9V5
+                            c0-0.6,0.4-1,1-1h14c0.6,0,1,0.4,1,1V13.9z"/>
+                        </svg>
+                    </label>
+                </div>
+            </div>
+            <input type="text" name="post" value="post" hidden>
+            <div>
+            <button type="submit" id="create_post" >Post</button>
+            </div>  
+            
+        </form>
+    </div>
+    <div class="mini-nav" style="clear: both;">
+        <h4 class="active" id="all" role="button" onclick="showAllPosts()" >All Posts</h4>
+        <h4 id="mine" role="button" onclick="showMyPosts()">Personal Posts</h4>
+        <h4 id="engagements" role="button" onclick="showEngagedPosts()">Engagements</h4>
+    </div>
+    
+    <div class="p-posts">
+        <div id="all-posts">
+            {% for post in other_posts %}
+    
+        <div class="post">
+            {% if request.user == post.user %} 
+            <div class="edits">
+                <a href="{% url 'edit_post' post.pk %}" >Edit</a>
+                <a role="button" class="delete_btn" >Delete</a>
+            </div>
+
+            <div class="delete_modal" >
+                <h4>Are you sure you want to delete this post?</h4>
+                <div class="delete_buttons">
+                    <a role="button" class="abort" style="background: green;">No</a>
+                    <a href="{% url 'delete_post' post.pk %}" id="confirm" style="background: red;">Delete</a>
+                </div>
+            </div>
+            {% endif %}
+            <div class="post-head">
+                {% if post.user.profile.image %}
+                <div class="image"> <a href="{% url 'profile' post.user.pk %}"> <img src="{{ post.user.profile.image.url }}" alt=""></a> </div>
+                {% else %}
+                <div class="hel"><a href="{% url 'profile' post.user.pk %}"> <div class="def-image"></div></a></div>
+                {% endif %}
+                <div class="name">{{ post.user.username }}  </div>
+            </div>
+            <div class="post-body">
+                {% if post.image %} 
+                    <div class="img-div"><img src="{{ post.image.url }}" alt=""></div>
+                {% endif %}
+                <div><p>{{ post.content }}</p></div>
+                <div>
+                    <small>{{ post.created }}</small>
+                </div>
+            </div>
+            <div class="line"></div>
+            <div class="post-footer">
+                <a role="button" class="comment" >
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16">
+                            <path fill="#000" d="M3 11.2c0 .1 0 .1 0 0 0 .1 0 .1 0 0zM8.3 1C3.9 1 0 3.6 0 6.6c0 2 1.1 3.7 3 4.7s0 .1 0 .1c-.1 1.3-.9 1.7-.9 1.7L.3 14h2c2.5 0 4.3-1.1 5.1-1.9h.8c4.3 0 7.8-2.5 7.8-5.6S12.6 1 8.3 1zm-.1 10.1H7.1l-.2.2c-.5.5-1.6 1.4-3.3 1.7.3-.5.5-1.1.5-2v-.3l-.3-.1C2 9.7 1 8.3 1 6.6 1 4.2 4.5 2 8.3 2 12 2 15 4 15 6.6c0 2.4-3.1 4.5-6.8 4.5z" class="color444 svgShape"/><path fill="#ff8066" d="M6 7a1 1 0 11-2 0 1 1 0 012 0zM9 7a1 1 0 11-2 0 1 1 0 012 0zM12 7a1 1 0 11-2 0 1 1 0 012 0z" class="color444 svgShape"/>
+                        </svg>
+                    </svg>
+                    <span>Comment</span>
+                </a>
+                <a role="button" class="like"> 
+                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+                            <path fill="#000" d="M6.28001656,3.46389584e-14 C6.91001656,0.0191596721 7.52001656,0.129159672 8.11101656,0.330159672 L8.11101656,0.330159672 L8.17001656,0.330159672 C8.21001656,0.349159672 8.24001656,0.370159672 8.26001656,0.389159672 C8.48101656,0.460159672 8.69001656,0.540159672 8.89001656,0.650159672 L8.89001656,0.650159672 L9.27001656,0.820159672 C9.42001656,0.900159672 9.60001656,1.04915967 9.70001656,1.11015967 C9.80001656,1.16915967 9.91001656,1.23015967 10.0000166,1.29915967 C11.1110166,0.450159672 12.4600166,-0.00984032788 13.8500166,3.46389584e-14 C14.4810166,3.46389584e-14 15.1110166,0.0891596721 15.7100166,0.290159672 C19.4010166,1.49015967 20.7310166,5.54015967 19.6200166,9.08015967 C18.9900166,10.8891597 17.9600166,12.5401597 16.6110166,13.8891597 C14.6800166,15.7591597 12.5610166,17.4191597 10.2800166,18.8491597 L10.2800166,18.8491597 L10.0300166,19.0001597 L9.77001656,18.8391597 C7.48101656,17.4191597 5.35001656,15.7591597 3.40101656,13.8791597 C2.06101656,12.5301597 1.03001656,10.8891597 0.390016562,9.08015967 C-0.739983438,5.54015967 0.590016562,1.49015967 4.32101656,0.269159672 C4.61101656,0.169159672 4.91001656,0.0991596721 5.21001656,0.0601596721 L5.21001656,0.0601596721 L5.33001656,0.0601596721 C5.61101656,0.0191596721 5.89001656,3.46389584e-14 6.17001656,3.46389584e-14 L6.17001656,3.46389584e-14 Z M15.1900166,3.16015967 C14.7800166,3.01915967 14.3300166,3.24015967 14.1800166,3.66015967 C14.0400166,4.08015967 14.2600166,4.54015967 14.6800166,4.68915967 C15.3210166,4.92915967 15.7500166,5.56015967 15.7500166,6.25915967 L15.7500166,6.25915967 L15.7500166,6.29015967 C15.7310166,6.51915967 15.8000166,6.74015967 15.9400166,6.91015967 C16.0800166,7.08015967 16.2900166,7.17915967 16.5100166,7.20015967 C16.9200166,7.18915967 17.2700166,6.86015967 17.3000166,6.43915967 L17.3000166,6.43915967 L17.3000166,6.32015967 C17.3300166,4.91915967 16.4810166,3.65015967 15.1900166,3.16015967 Z" class="color200E32 svgShape" transform="translate(2 2.5)"/>
+                        </svg>
+                    </svg>
+                    <span>Like</span>
+                </a>
+            </div>
+            <div>
+                <form action="" method="post" class="commentForms">
+                    {% csrf_token %}
+                    {{ comment_form.content }}
+                    <input type="text" name="comment" value="true" hidden>
+                    <input type="text" name="post_id" value="{{ post.id }}" hidden>
+                    <button class="comment_btn" type="submit">Comment</button>
+                </form>
+            </div>
+
+            {% if post.comment_set.all %} 
+            <span role="button" class="showcomment" >Show Comments</span>
+            <div class="comment-space">
+                <span role="button" class="hide-comment" >Hide Comments</span>
+                {% for comment in post.comment_set.all %}
+                <div class="post-head">
+                    {% if comment.user.profile.image %}
+                    <div class="image"> <a href="{% url 'profile' post.user.pk %}"> <img src="{{ comment.user.profile.image.url }}" alt=""></a> </div>
+                    {% else %}
+                    <div class="hel"><a href="{% url 'profile' post.user.pk %}"> <div class="def-image"></div></a></div>
+                    {% endif %}
+                    <div class="name">{{ comment.user.username }}  </div>
+                </div>
+                <div class="post-body">
+                    {% if comment.image %} 
+                        <div class="img-div"><img src="{{ post.image.url }}" alt=""></div>
+                    {% endif %}
+                    <div><p>{{ comment.content }}</p></div>
+                    <div>
+                        <small>{{ comment.created_at }}</small>
+                    </div>
+                </div>
+                <hr style="width:90%;margin:auto;margin-top: 5px">
+                {% endfor %}
+            </div>
+            {% endif %}
+
+        </div>    
+        {% endfor %}
+        </div>
+
+        <div id="my-posts" style="display: none;">
+            {% for post in my_posts %}
+            <div class="post">
+                <div class="post-head">
+                    {% if post.user.profile.image %}
+                    <div class="image"> <a href="{% url 'profile' post.user.pk %}"> <img src="{{ post.user.profile.image.url }}" alt=""></a> </div>
+                    {% else %}
+                    <div class="hel"><a href="{% url 'profile' post.user.pk %}"> <div class="def-image"></div></a></div>
+                    {% endif %}
+                    <div class="name">{{ post.user.username }}  </div>
+                </div>
+                <div class="post-body">
+                    {% if post.image %} 
+                        <div class="img-div"><img src="{{ post.image.url }}" alt=""></div>
+                    {% endif %}
+                    <div><p>{{ post.content }}</p></div>
+                    <div>
+                        <small>{{ post.created }}</small>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="post-footer">
+                    <a role="button" class="comment" >
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16">
+                                <path fill="#000" d="M3 11.2c0 .1 0 .1 0 0 0 .1 0 .1 0 0zM8.3 1C3.9 1 0 3.6 0 6.6c0 2 1.1 3.7 3 4.7s0 .1 0 .1c-.1 1.3-.9 1.7-.9 1.7L.3 14h2c2.5 0 4.3-1.1 5.1-1.9h.8c4.3 0 7.8-2.5 7.8-5.6S12.6 1 8.3 1zm-.1 10.1H7.1l-.2.2c-.5.5-1.6 1.4-3.3 1.7.3-.5.5-1.1.5-2v-.3l-.3-.1C2 9.7 1 8.3 1 6.6 1 4.2 4.5 2 8.3 2 12 2 15 4 15 6.6c0 2.4-3.1 4.5-6.8 4.5z" class="color444 svgShape"/><path fill="#ff8066" d="M6 7a1 1 0 11-2 0 1 1 0 012 0zM9 7a1 1 0 11-2 0 1 1 0 012 0zM12 7a1 1 0 11-2 0 1 1 0 012 0z" class="color444 svgShape"/>
+                            </svg>
+                        </svg>
+                        <span>Comment</span>
+                    </a>
+                    <a role="button" class="like"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+                                <path fill="#000" d="M6.28001656,3.46389584e-14 C6.91001656,0.0191596721 7.52001656,0.129159672 8.11101656,0.330159672 L8.11101656,0.330159672 L8.17001656,0.330159672 C8.21001656,0.349159672 8.24001656,0.370159672 8.26001656,0.389159672 C8.48101656,0.460159672 8.69001656,0.540159672 8.89001656,0.650159672 L8.89001656,0.650159672 L9.27001656,0.820159672 C9.42001656,0.900159672 9.60001656,1.04915967 9.70001656,1.11015967 C9.80001656,1.16915967 9.91001656,1.23015967 10.0000166,1.29915967 C11.1110166,0.450159672 12.4600166,-0.00984032788 13.8500166,3.46389584e-14 C14.4810166,3.46389584e-14 15.1110166,0.0891596721 15.7100166,0.290159672 C19.4010166,1.49015967 20.7310166,5.54015967 19.6200166,9.08015967 C18.9900166,10.8891597 17.9600166,12.5401597 16.6110166,13.8891597 C14.6800166,15.7591597 12.5610166,17.4191597 10.2800166,18.8491597 L10.2800166,18.8491597 L10.0300166,19.0001597 L9.77001656,18.8391597 C7.48101656,17.4191597 5.35001656,15.7591597 3.40101656,13.8791597 C2.06101656,12.5301597 1.03001656,10.8891597 0.390016562,9.08015967 C-0.739983438,5.54015967 0.590016562,1.49015967 4.32101656,0.269159672 C4.61101656,0.169159672 4.91001656,0.0991596721 5.21001656,0.0601596721 L5.21001656,0.0601596721 L5.33001656,0.0601596721 C5.61101656,0.0191596721 5.89001656,3.46389584e-14 6.17001656,3.46389584e-14 L6.17001656,3.46389584e-14 Z M15.1900166,3.16015967 C14.7800166,3.01915967 14.3300166,3.24015967 14.1800166,3.66015967 C14.0400166,4.08015967 14.2600166,4.54015967 14.6800166,4.68915967 C15.3210166,4.92915967 15.7500166,5.56015967 15.7500166,6.25915967 L15.7500166,6.25915967 L15.7500166,6.29015967 C15.7310166,6.51915967 15.8000166,6.74015967 15.9400166,6.91015967 C16.0800166,7.08015967 16.2900166,7.17915967 16.5100166,7.20015967 C16.9200166,7.18915967 17.2700166,6.86015967 17.3000166,6.43915967 L17.3000166,6.43915967 L17.3000166,6.32015967 C17.3300166,4.91915967 16.4810166,3.65015967 15.1900166,3.16015967 Z" class="color200E32 svgShape" transform="translate(2 2.5)"/>
+                            </svg>
+                        </svg>
+                        <span>Like</span>
+                    </a>
+                </div>
+                <div>
+                    <form action="" method="post" class="commentForms">
+                        {% csrf_token %}
+                        {{ comment_form.content }}
+                        <input type="text" name="comment" value="true" hidden>
+                        <input type="text" name="post_id" value="{{ post.id }}" hidden>
+                        <button class="comment_btn" type="submit">Comment</button>
+                    </form>
+                </div>
+    
+                {% if post.comment_set.all %} 
+                <span role="button" class="showcomment" >Show Comments</span>
+                <div class="comment-space">
+                    <span role="button" class="hide-comment" >Hide Comments</span>
+                    {% for comment in post.comment_set.all %}
+                    <div class="post-head">
+                        {% if comment.user.profile.image %}
+                        <div class="image"> <a href="{% url 'profile' post.user.pk %}"> <img src="{{ comment.user.profile.image.url }}" alt=""></a> </div>
+                        {% else %}
+                        <div class="hel"><a href="{% url 'profile' post.user.pk %}"> <div class="def-image"></div></a></div>
+                        {% endif %}
+                        <div class="name">{{ comment.user.username }}  </div>
+                    </div>
+                    <div class="post-body">
+                        {% if comment.image %} 
+                            <div class="img-div"><img src="{{ post.image.url }}" alt=""></div>
+                        {% endif %}
+                        <div><p>{{ comment.content }}</p></div>
+                        <div>
+                            <small>{{ comment.created_at }}</small>
+                        </div>
+                    </div>
+                    <hr style="width:90%;margin:auto;margin-top: 5px">
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+
+        <div id="engagement-posts" style="display: none;" >
+            {% for post in activities %}
+            <div class="post">
+                <div class="post-head">
+                    {% if post.user.profile.image %}
+                    <div class="image"> <img src="{{ post.user.profile.image.url }}" alt=""> </div>
+                    {% else %}
+                    <div class="def-image"></div>
+                    {% endif %}
+                    <div class="name">{{ post.user.username }}  </div>
+                </div>
+                <div class="post-body">{{ post.content }}
+                    <div>
+                        <small>{{ post.created }}</small>
+                    </div>
+                </div>
+                <div class="line"></div>
+                <div class="post-footer">
+                    <a role="button" class="comment" >
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16">
+                                <path fill="#000" d="M3 11.2c0 .1 0 .1 0 0 0 .1 0 .1 0 0zM8.3 1C3.9 1 0 3.6 0 6.6c0 2 1.1 3.7 3 4.7s0 .1 0 .1c-.1 1.3-.9 1.7-.9 1.7L.3 14h2c2.5 0 4.3-1.1 5.1-1.9h.8c4.3 0 7.8-2.5 7.8-5.6S12.6 1 8.3 1zm-.1 10.1H7.1l-.2.2c-.5.5-1.6 1.4-3.3 1.7.3-.5.5-1.1.5-2v-.3l-.3-.1C2 9.7 1 8.3 1 6.6 1 4.2 4.5 2 8.3 2 12 2 15 4 15 6.6c0 2.4-3.1 4.5-6.8 4.5z" class="color444 svgShape"/><path fill="#ff8066" d="M6 7a1 1 0 11-2 0 1 1 0 012 0zM9 7a1 1 0 11-2 0 1 1 0 012 0zM12 7a1 1 0 11-2 0 1 1 0 012 0z" class="color444 svgShape"/>
+                            </svg>
+                        </svg>
+                        <span>Comment</span>
+                    </a>
+                    <a role="button" class="like"> 
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 24 24">
+                                <path fill="#000" d="M6.28001656,3.46389584e-14 C6.91001656,0.0191596721 7.52001656,0.129159672 8.11101656,0.330159672 L8.11101656,0.330159672 L8.17001656,0.330159672 C8.21001656,0.349159672 8.24001656,0.370159672 8.26001656,0.389159672 C8.48101656,0.460159672 8.69001656,0.540159672 8.89001656,0.650159672 L8.89001656,0.650159672 L9.27001656,0.820159672 C9.42001656,0.900159672 9.60001656,1.04915967 9.70001656,1.11015967 C9.80001656,1.16915967 9.91001656,1.23015967 10.0000166,1.29915967 C11.1110166,0.450159672 12.4600166,-0.00984032788 13.8500166,3.46389584e-14 C14.4810166,3.46389584e-14 15.1110166,0.0891596721 15.7100166,0.290159672 C19.4010166,1.49015967 20.7310166,5.54015967 19.6200166,9.08015967 C18.9900166,10.8891597 17.9600166,12.5401597 16.6110166,13.8891597 C14.6800166,15.7591597 12.5610166,17.4191597 10.2800166,18.8491597 L10.2800166,18.8491597 L10.0300166,19.0001597 L9.77001656,18.8391597 C7.48101656,17.4191597 5.35001656,15.7591597 3.40101656,13.8791597 C2.06101656,12.5301597 1.03001656,10.8891597 0.390016562,9.08015967 C-0.739983438,5.54015967 0.590016562,1.49015967 4.32101656,0.269159672 C4.61101656,0.169159672 4.91001656,0.0991596721 5.21001656,0.0601596721 L5.21001656,0.0601596721 L5.33001656,0.0601596721 C5.61101656,0.0191596721 5.89001656,3.46389584e-14 6.17001656,3.46389584e-14 L6.17001656,3.46389584e-14 Z M15.1900166,3.16015967 C14.7800166,3.01915967 14.3300166,3.24015967 14.1800166,3.66015967 C14.0400166,4.08015967 14.2600166,4.54015967 14.6800166,4.68915967 C15.3210166,4.92915967 15.7500166,5.56015967 15.7500166,6.25915967 L15.7500166,6.25915967 L15.7500166,6.29015967 C15.7310166,6.51915967 15.8000166,6.74015967 15.9400166,6.91015967 C16.0800166,7.08015967 16.2900166,7.17915967 16.5100166,7.20015967 C16.9200166,7.18915967 17.2700166,6.86015967 17.3000166,6.43915967 L17.3000166,6.43915967 L17.3000166,6.32015967 C17.3300166,4.91915967 16.4810166,3.65015967 15.1900166,3.16015967 Z" class="color200E32 svgShape" transform="translate(2 2.5)"/>
+                            </svg>
+                        </svg>
+                        <span>Like</span>
+                    </a>
+                </div>
+                <div>
+                    <form action="" method="post" class="commentForms">
+                        {% csrf_token %}
+                        {{ comment_form.content }}
+                        <input type="text" name="comment" value="true" hidden>
+                        <input type="text" name="post_id" value="{{ post.id }}" hidden>
+                        <button class="comment_btn" type="submit">Comment</button>
+                    </form>
+                </div>
+
+                {% if post.comment_set.all %} 
+                <span role="button" class="showcomment" >Show Comments</span>
+                <div class="comment-space">
+                    <span role="button" class="hide-comment" >Hide Comments</span>
+                    {% for comment in post.comment_set.all %}
+                    <div class="post-head">
+                        {% if comment.user.profile.image %}
+                        <div class="image"> <a href="{% url 'profile' post.user.pk %}"> <img src="{{ comment.user.profile.image.url }}" alt=""></a> </div>
+                        {% else %}
+                        <div class="hel"><a href="{% url 'profile' post.user.pk %}"> <div class="def-image"></div></a></div>
+                        {% endif %}
+                        <div class="name">{{ comment.user.username }}  </div>
+                    </div>
+                    <div class="post-body">
+                        {% if comment.image %} 
+                            <div class="img-div"><img src="{{ post.image.url }}" alt=""></div>
+                        {% endif %}
+                        <div><p>{{ comment.content }}</p></div>
+                        <div>
+                            <small>{{ comment.created_at }}</small>
+                        </div>
+                    </div>
+                    <hr style="width:90%;margin:auto;margin-top: 5px">
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {{ profile.id|json_script:'profile_id'}}
+    {{ status|json_script:'status'}}
+    {% include 'chat/chat.html' %}
+    
+    
+</main>
+{% }
+{% endblock %}
+
+{% block extra_script %} 
+{% if request.user == profile %}
+<script>
+    let inp = document.getElementsByName('image')[0];
+    let imageSubmitBtn = document.getElementById('img_btn');
+    imageSubmitBtn.style.display = "none";
+    inp.addEventListener('change',function() {
+        if (this.value) {
+            imageSubmitBtn.style.display = "block";
+            console.log('Value Set!');
+        } else {
+            console.log('Waiting ....');
+        }
+    } );
+</script>
+{% endif %}
+
+<script>
+
+    let postModal = document.getElementById("post_form_modal");
+    let openPostModalBtn= document.getElementById("open_post");
+    let closePostModal = document.getElementsByClassName("close")[1];
+    let modal = document.getElementById("modal");
+    let open_modal = document.getElementById("modal1");
+    let closeModal = document.getElementsByClassName("close")[0];
+
+    open_modal.onclick = function() {
+        modal.style.display = "block";
+    }
+
+    openPostModalBtn.onclick = function() {
+        postModal.style.display = "block";
+    }
+
+    closePostModal.onclick = function () {
+        postModal.style.display = "none";
+    }
+
+    closeModal.onclick = function () {
+        modal.style.display = "none";
+    }
+
+    window.onclick = function(event)  {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+
+    let allPosts = document.getElementById('all-posts')
+    let engagedPosts = document.getElementById('engagement-posts')
+    let myPosts = document.getElementById('my-posts')
+    let Btn1 ,Btn2 ,Btn3
+    Btn1 = document.getElementById('all')
+    Btn2 = document.getElementById('mine')
+    Btn3 = document.getElementById('engagements')
+
+    const btnArray = [Btn1,Btn2,Btn3]
+    
+    
+    function showAllPosts() {
+        btnArray.forEach(element => {
+            element.className = null;
+        });
+        btnArray[0].className = 'active'
+        allPosts.style.display = 'block';
+        engagedPosts.style.display = 'none';
+        myPosts.style.display = 'none';
+    }
+
+    function showEngagedPosts() {
+        btnArray.forEach(element => {
+            element.className = null;
+        });
+        btnArray[2].className = 'active'
+        allPosts.style.display = 'none';
+        engagedPosts.style.display = 'block';
+        myPosts.style.display = 'none';
+    }
+
+    function showMyPosts() {
+        btnArray.forEach(element => {
+            element.className = null;
+        });
+        btnArray[1].className = 'active'
+        allPosts.style.display = 'none';
+        engagedPosts.style.display = 'none';
+        myPosts.style.display = 'block';
+    }
+
+
+</script>
+<script src="{% static 'chat/js/chat.js' %}"></script>            
+<script>
+    const profileId = JSON.parse(document.querySelector('#profile_id').textContent);
+    
+    const chatBtn = document.querySelector('#chat_user');
+    const chatArea = document.querySelector('#chat-ground');
+    const closeBtn = document.querySelector('#close');
+    const notificationBtn = document.querySelector('#toggle-notification');
+    var state = JSON.parse(document.querySelector('#status').textContent);
+
+    url = `http://localhost:8000/notification/subscribe/${profileId}/`
+
+    const getState = () => {
+        if(state == true) {
+            return true;
+        }else{
+            return false
+        }
+    }
+
+    chatBtn.onclick = function() {
+        chatArea.style.display = 'flex';
+        console.log(user);
+    };
+    closeBtn.onclick = function() {
+        chatArea.style.display = 'none'
+    }
+
+    notificationBtn.onclick = function(e) {
+        myState = getState()
+        if(!myState){
+            this.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-slash" viewBox="0 0 16 16">
+                    <path d="M5.164 14H15c-.299-.199-.557-.553-.78-1-.9-1.8-1.22-5.12-1.22-6 0-.264-.02-.523-.06-.776l-.938.938c.02.708.157 2.154.457 3.58.161.767.377 1.566.663 2.258H6.164l-1 1zm5.581-9.91a3.986 3.986 0 0 0-1.948-1.01L8 2.917l-.797.161A4.002 4.002 0 0 0 4 7c0 .628-.134 2.197-.459 3.742-.05.238-.105.479-.166.718l-1.653 1.653c.02-.037.04-.074.059-.113C2.679 11.2 3 7.88 3 7c0-2.42 1.72-4.44 4.005-4.901a1 1 0 1 1 1.99 0c.942.19 1.788.645 2.457 1.284l-.707.707zM10 15a2 2 0 1 1-4 0h4zm-9.375.625a.53.53 0 0 0 .75.75l14.75-14.75a.53.53 0 0 0-.75-.75L.625 15.625z"/>
+                </svg>`
+            state = true;
+            fetch(url)
+                .then((response) => response.json())
+                .then((data) => console.log(data));
+        }else{
+            this.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bell-fill" viewBox="0 0 16 16">
+                    <path d="M8 16a2 2 0 0 0 2-2H6a2 2 0 0 0 2 2zm.995-14.901a1 1 0 1 0-1.99 0A5.002 5.002 0 0 0 3 6c0 1.098-.5 6-2 7h14c-1.5-1-2-5.902-2-7 0-2.42-1.72-4.44-4.005-4.901z"/>
+                </svg>
+            `
+            state = false;
+            fetch(`http://localhost:8000/notification/disable/${profileId}`)
+                .then((response) => response.json())
+                .then((data) => console.log(data));
+        }
+
+    
+    }
+
+    
+
+</script>
+
+{% endblock %}

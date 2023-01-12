@@ -1,0 +1,51 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+main {
+    margin: 0 22% ;
+    background: grey;
+    min-height: 100vh;
+}
+
+section {
+    margin: 100px 7%;
+    margin-top: 20px;
+    padding-top: 20px;
+}
+
+.post {
+    min-height: 180px;
+    background: #f2f2f2;
+}
+
+.post-head {
+    display: flex;
+}
+
+.image {
+    width: 50px;
+    height: 50px;
+    background: #000;
+    border-radius: 50%;
+}
+
+.name {
+    width: 90%;
+    background: hotpink;
+}
+
+.post-body {
+    margin: 0 4%;
+    padding-top: 10px;
+    background: indianred;
+    height: 130px;
+}
+
+.post-footer {
+    background: indigo;
+    padding-top: 8px;
+    height: 50px;
+}

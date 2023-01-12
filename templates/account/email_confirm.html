@@ -1,0 +1,58 @@
+{% extends "account/base.html" %}
+{% load static %}
+{% load i18n %}
+{% load account %}
+
+{% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
+{% block extra_head %} 
+  <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+
+  <style>
+    .cen {
+        width: 650px;
+        margin: auto;
+        padding: 30px 30px;
+        background: #f1f1f1;
+        position: absolute;
+        top: 25%;
+        left: 25%;
+    }
+    form {
+        width: 70%;
+        margin-top: 40px;
+    }
+    main {
+        color: #000;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+<main class="body">
+    <header class="index_nav">
+        <a href="" class="brand">MAJMAU-L-ULOOM</a>
+    </header>
+    <div class="cen">
+        <h1>{% trans "Confirm E-mail Address" %}</h1>
+
+        {% if confirmation %}
+
+        {% user_display confirmation.email_address.user as user_display %}
+
+        <p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
+
+        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+        {% csrf_token %}
+            <button type="submit">{% trans 'Confirm' %}</button>
+        </form>
+
+        {% else %}
+
+        {% url 'account_email' as email_url %}
+
+        <p>{% blocktrans %}This e-mail confirmation link expired or is invalid. Please <a href="{{ email_url }}">issue a new e-mail confirmation request</a>.{% endblocktrans %}</p>
+
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

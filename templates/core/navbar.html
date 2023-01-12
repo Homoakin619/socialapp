@@ -1,0 +1,61 @@
+<header id="general-header">
+    <nav class="navigation">
+        {% if request.user.is_authenticated %}
+
+        {% if user.profile.image %}
+            <div class="user">
+                <a href="{% url 'profile' request.user.pk %}">
+                    <img src="{{ user.profile.image.url }}" alt="" width="50" height="50" style="border-radius: 50%;" >
+                </a>
+                <h3>{{ request.user.first_name }} {{ request.user.last_name }} </h3>
+            </div>
+            {% else %}
+        <div class="user">
+            <a href="{% url 'profile' request.user.pk %}">
+                <img src="/static/core/images/img.jpg" alt="" width="50" height="50" style="border-radius: 50%;" >
+            </a>
+            <h3>{{ request.user.first_name }} {{ request.user.last_name }} </h3>
+        </div>
+        {% endif %}
+        <h3 class="navbrand">MAJMAU-L-ULOOM</h3>
+        <div class="navbar">
+            
+            <a href="{% url 'home' %}">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"/>
+                        <path fill="" d="M218.76367,103.7002,138.75684,30.96436a15.93657,15.93657,0,0,0-21.52637.00146L37.2373,103.69971A16.03108,16.03108,0,0,0,32,115.53857l0,92.09522a16.47275,16.47275,0,0,0,4.01066,10.96174A15.91729,15.91729,0,0,0,48.002,223.999H95.96484a8,8,0,0,0,8-8V167.9917a8,8,0,0,1,8-8h32a8,8,0,0,1,8,8V215.999a8,8,0,0,0,8,8h48.05731a15.40625,15.40625,0,0,0,7.53406-1.85584A16.08415,16.08415,0,0,0,224,207.999v-92.46A16.03567,16.03567,0,0,0,218.76367,103.7002Z" class="color000 svgShape"/>
+                    </svg>
+                </svg>
+            </a>
+            <a href="{% url 'notification' %}">
+                
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="288" height="288">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
+                        <path fill="none" d="M0 0h24v24H0V0z"/>
+                        <path fill="" d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-1.29 1.29c-.63.63-.19 1.71.7 1.71h13.17c.89 0 1.34-1.08.71-1.71L18 16z" class="color000 svgShape"/>
+                    </svg>    
+                </svg>
+            </a>
+            <a href="" >
+            
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32">
+                        <path fill="" d="M27 5H5a3 3 0 0 0-3 3v.4l13.64 7.33a1 1 0 0 0 .78 0L30 8.4V8a3 3 0 0 0-3-3zm2.68 20.32A3 3 0 0 0 30 24V10.67l-9.1 4.89zM2 10.67V24a3 3 0 0 0 .32 1.32l8.78-9.76zm15.31 6.82a3.16 3.16 0 0 1-1.33.3 3 3 0 0 1-1.24-.27l-1.83-1-9.15 10.2A3 3 0 0 0 5 27h22a3 3 0 0 0 1.25-.28l-9.17-10.18z" class="color000 svgShape" data-name="Message"/>
+                    </svg>
+                </svg>
+            </a>
+            
+            <a href="{% url 'logout' %}" >
+                
+                <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 6.35 6.35">
+                        <path fill-rule="evenodd" d="M7.953.998a3.024 3.024 0 0 0-3.006 3.004V20a3.024 3.024 0 0 0 3.006 3.004h3.994A3.022 3.022 0 0 0 14.951 20v-4.002c0-1.334-2-1.334-2 0V20a.983.983 0 0 1-1.004 1.004H7.953A.983.983 0 0 1 6.95 20V4.002a.983.983 0 0 1 1.004-1.004h3.994a.983.983 0 0 1 1.004 1.004v4.002c0 1.334 2 1.334 2 0V4.002A3.022 3.022 0 0 0 11.947.998H7.953zM1.957 4.984a1 1 0 0 0-1.01 1.02v11.994a1 1 0 0 0 2 0V6.004a1 1 0 0 0-.982-1.02 1 1 0 0 0-.008 0zm16.037 2.004a1 1 0 0 0-.096.004 1 1 0 0 0-.6 1.713L19.595 11h-9.588a1.006 1.006 0 0 0-.104 0c-1.333.07-1.23 2.071.104 2.002h9.582l-2.29 2.287a1 1 0 1 0 1.411 1.418l4.002-4.002a1 1 0 0 0 0-1.41l-4.002-4a1 1 0 0 0-.715-.307z" color="#000" font-family="sans-serif" font-weight="400" overflow="visible" paint-order="stroke fill markers" transform="scale(.26458)" style="line-height:normal;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000;text-transform:none;text-orientation:mixed;padding:0;isolation:auto;mix-blend-mode:normal" fill="" class="color000 svgShape"/>
+                    </svg>
+                </svg>
+            </a>
+            
+        </div>
+        {% endif %}
+    </nav>
+</header>

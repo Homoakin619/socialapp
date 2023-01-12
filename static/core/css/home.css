@@ -1,0 +1,134 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+@font-face {
+    font-family: 'Roboto';
+    src: url('/static/core/fonts/Roboto-Black-webfont') format('woff');
+}
+
+.body {
+    background: rgba(222, 184, 135,0.7);
+    min-height: 100vh;
+    background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.6)),url('/static/core/images/background.jpg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-family: Roboto, sans-serif;
+}
+
+.index_nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    min-height: 80px;
+    margin: 0 10%;
+}
+
+header a {
+    text-decoration: none;
+    color: #fff;
+}
+
+.brand {
+    color: #fff;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+
+.navig {
+    font-size: 18px;
+    padding: 10px;
+}
+
+.navig:hover {
+    cursor: pointer;
+}
+
+.banner {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    top: 35%;
+}
+
+.banner-head {
+    font-size: 80px;
+    font-family: Roboto, sans-serif;
+    text-transform: uppercase;
+    color: #f2f2f2;
+}
+
+.banner-text {
+    color: #f3f3f3;
+    font-family: Roboto;
+}
+
+.left {
+    width: 60%;
+    padding: 0 50px;
+    /* margin: 0 auto; */
+}
+
+.right {
+    width: 40%;
+    /* margin: -120px 20px; */
+}
+
+#register:hover,#login:hover {
+    cursor: pointer;
+}
+
+form {
+    width: 50%;
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 4px 8px 0px;
+    padding: 20px;
+    background: rgba(255, 255, 255,0.7);
+}
+
+#signup_form {
+    margin: -120px 0 0 0;
+    /* background: violet; */
+}
+.form-row input[type=text],input[type=password],input[type=email] {
+    height: 30px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 1px solid tomato;
+    /* border: none; */
+}
+.form-row label {
+    padding: 5px 0;
+    font-size: 18px;
+}
+.form-row input[type=text]:focus,input[type=password]:focus,input[type=email]:focus { 
+    border: none;
+    border: 1px dashed tomato;
+    outline: none;
+}
+
+.submit, .primaryAction {
+    background: tomato;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    color: #fff;
+}
+
+.submit,.primaryAction:hover {
+    cursor: pointer;
+}
+
+.secondaryAction {
+    color: rgb(163, 162, 162);
+    text-decoration: none;
+}
+
+.form-row {
+    display: flex;
+    margin-bottom: 10px;
+    flex-direction: column;
+}

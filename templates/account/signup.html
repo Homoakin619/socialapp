@@ -1,0 +1,70 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+
+{% load static %}
+
+{% block extra_head %} 
+  <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
+{% endblock %}
+
+{% block head_title %}{% trans "Signup" %}{% endblock %}
+
+{% block content %}
+<main class="body">
+  <header class="index_nav">
+      <a href="" class="brand">MAJMAU-L-ULOOM</a>
+      <div>
+        <a href="{% url 'account_login' %}" class="navig">Login</a>
+        <a href="{% url 'account_signup' %}" class="navig">Register</a>
+    </div>
+  </header>
+
+  <section class="banner">
+      
+      <div class="left">
+          <h1 class="banner-head">Welcome to Majmau-l-uloom</h1>
+          <p class="banner-text">A place where knowledge is being sold and bought all for free.The first of its kind!</p>
+      </div>
+
+      <div class="right">
+        <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
+          {% csrf_token %}
+          <div class="form-header">
+              <h3>Enter Registration Details</h3>
+          </div>
+          <div class="form-row">
+              <label for="id_username">Username</label>
+              {{ form.username }}
+          </div>
+          <div class="form-row">
+              <label for="first_name">Firstname</label>
+              {{ form.first_name }}
+          </div>
+          <div class="form-row">
+              <label for="id_last_name">Lastname</label>
+              {{ form.last_name }}
+          </div>
+          <div class="form-row">
+              <label for="id_email">Email</label>
+              {{ form.email }}
+          </div>
+          <div class="form-row">
+              <label for="id_password1">Password</label>
+              {{ form.password1 }}
+          </div>
+          <div class="form-row">
+              <label for="id_password2">Confirm Password</label>
+              {{ form.password2 }}
+          </div>
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+          <button class="submit" type="submit">{% trans "Sign Up" %}</button>
+        </form>
+      </div>
+
+  </section>
+</main>
+
+{% endblock %}
