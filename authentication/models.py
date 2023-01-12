@@ -11,10 +11,10 @@ NICHE_CHOICES = (
 
 class Profile(models.Model):
     user = models.OneToOneField(User,on_delete=models.CASCADE)
-    image = models.ImageField()
+    image = models.ImageField(null=True,blank=True)
     about = models.CharField(max_length=150)
     is_ustaz = models.BooleanField(default=False)
-    niche = models.CharField(choices=NICHE_CHOICES,max_length=7)
+    niche = models.CharField(choices=NICHE_CHOICES,max_length=7,default='ADAB')
 
     def __str__(self):
         return self.user.username
