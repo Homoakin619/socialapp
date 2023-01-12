@@ -33,6 +33,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://socialapp.up.railway.app/'
+]
+
 LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'home'
 
@@ -104,7 +108,7 @@ CHANNEL_LAYERS = {
     'default':{
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG':{
-            'hosts': [('127.0.0.1',6379),('localhost',6379)]
+            'hosts': [('127.0.0.1',6379),('localhost',6379),('https://socialapp.up.railway.app/',6379)]
         }
     }
 }
