@@ -37,6 +37,8 @@ CSRF_TRUSTED_ORIGINS = [
     'https://socialapp.up.railway.app'
 ]
 
+SECURE_SSL_REDIRECT = True
+
 LOGIN_URL = 'account_login'
 LOGIN_REDIRECT_URL = 'home'
 
