@@ -144,12 +144,12 @@ EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Majmaul Uloom Team <noreply@uloom.com>'
 
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.sqlite3',
+#         'NAME': BASE_DIR / 'db.sqlite3',
+#     }
+# }
 
 
 # Password validation
