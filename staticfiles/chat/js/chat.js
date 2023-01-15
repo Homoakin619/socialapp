@@ -5,7 +5,7 @@ const messageInput = document.querySelector('#message-input');
 const chatOutput = document.querySelector('#chat-body');
 
 const socket = new WebSocket(
-    'ws://' + window.location.host + '/ws/' + friendId + '/'
+    'wss://' + window.location.host + '/ws/' + friendId + '/'
 )
 
 socket.onopen = function(e) {
@@ -37,6 +37,7 @@ socket.onmessage = function(e) {
 
 socket.onerror = function(e) {
     console.log('ERROR IN CONNECTON')
+    console.log(e)
 }
 
 messageInput.onkeyup = function(e) {
