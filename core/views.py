@@ -136,11 +136,11 @@ class ProfileView(generic.View):
                 return reverse('profile',kwargs={'pk':kwargs['pk']})
         elif image:
             if image_form.is_valid():
-                print('Valid Image')
+                
                 image_form.save()
                 return HttpResponseRedirect(reverse('profile',kwargs={'pk':kwargs['pk']}))
             else:
-                print('Not Valid Image!')
+                
                 return HttpResponseRedirect(reverse('profile'))
         # Process Comments
         elif comment:
@@ -186,7 +186,7 @@ class NotificationView(generic.View):
         user = request.user
         my_notifications = Notification.objects.filter(subscriber=user).all().order_by('-pk')
         context = {'notifications':my_notifications}
-        print(my_notifications)
+        
         return render(request,self.template_name,context)
 
 
@@ -226,7 +226,7 @@ def view_notification(request,pk):
 def notification_view(request,pk):
     notification = get_object_or_404(Notification,pk=pk)
     post_id = notification.post_id
-    context = {}
+    context = {'comment':False}
     try:
         post = get_object_or_404(Post,pk=post_id)
         if notification.comment_id > 0:

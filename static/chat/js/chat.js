@@ -37,6 +37,7 @@ socket.onmessage = function(e) {
 
 socket.onerror = function(e) {
     console.log('ERROR IN CONNECTON')
+    console.log(e)
 }
 
 messageInput.onkeyup = function(e) {

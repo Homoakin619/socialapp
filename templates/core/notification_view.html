@@ -43,13 +43,14 @@
             <div>
                 <form action="" method="post" class="commentForms">
                     {% csrf_token %}
-                    {{ comment_form.content }}
+                    <!-- { comment_form.content } -->
                     <input type="text" name="comment" value="true" hidden>
                     <input type="text" name="post_id" value="{{ post.id }}" hidden>
                     <button class="comment_btn" type="submit">Comment</button>
                 </form>
             </div>
 
+            {% if comment %}
             <div class="commentspace">
                 <div class="post-head">
                     {% if comment.user.profile.image %}
@@ -69,6 +70,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
 
             {% if post.comment_set.all %} 
             <span role="button" class="showcomment" >Show All Comments</span>

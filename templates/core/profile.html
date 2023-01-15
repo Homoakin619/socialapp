@@ -32,15 +32,6 @@
         
         <form action="" method="post" >
             {% csrf_token %} 
-            <div>
-                <label for="id_first_name">First name:</label>
-                {{ profile_form.first_name }}
-            </div>
-
-            <div>
-                <label for="id_last_name">Last name:</label>
-                {{ profile_form.last_name }}
-            </div>
 
             <div>
                 <label for="id_About">About:</label>
@@ -411,7 +402,7 @@
     
     
 </main>
-{% }
+
 {% endblock %}
 
 {% block extra_script %} 
@@ -505,7 +496,10 @@
 
 
 </script>
+{% if request.user.id != profile.id %}
 <script src="{% static 'chat/js/chat.js' %}"></script>            
+{% endif %}
+
 <script>
     const profileId = JSON.parse(document.querySelector('#profile_id').textContent);
     

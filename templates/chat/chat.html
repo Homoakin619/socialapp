@@ -6,7 +6,7 @@
             {% if date.timestamp != today %}
             <h5 class="divider line one-line" >{{ date }}</h5>
             {% for message in messages %}
-            {% if message.chat_date == date %}
+            {% if message.timestamp == date %}
             {% if message.sender == request.user.username %}
             <div class="message end">
                 <div class="right">
