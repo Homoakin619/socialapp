@@ -1,0 +1,1 @@
+web: daphne web_app.asgi:application --websocket_timeout -1 $PORT --bind 0.0.0.0
