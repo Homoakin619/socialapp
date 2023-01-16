@@ -552,9 +552,7 @@ select {
 
 
 @media (481px <= width <= 768px) {
-    body {
-        background: green;
-    }
+
     main {
         width: 60%;
     }
@@ -620,9 +618,6 @@ select {
         width: 70%;
     }
 
-    body {
-        background: #aaa;
-    }
     .image-left img {
         width: 120px;
         height: 120px;
