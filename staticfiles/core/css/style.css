@@ -27,11 +27,11 @@ body {
     width: 100%;
     top: 0;
     border-bottom: 1px solid grey;
-    overflow: hidden;
+    /* overflow: hidden; */
     display: flex;
     justify-content: space-between;
     align-items: center;
-    z-index: 1;
+    z-index: 6;
  }
 
 .user {
@@ -45,13 +45,13 @@ body {
     text-decoration: none;
 }
 
-.navbar > a > svg {
+.navbar > a > svg,.navbar > span > svg {
     width: 30px;
     height: 30px;
     fill: #fff;
 }
 
-.navbar > a > svg:hover {
+.navbar > a > svg:hover,.navbar > span > svg:hover {
     fill: rgb(221, 211, 211);
 }
 
@@ -119,9 +119,8 @@ main {
     display: flex;
     gap: 50px;
     align-items: center;
-    justify-content: space-around;
-    width: 50%;
-    margin: auto;
+    justify-content: flex-end;
+    width: 80%;
 }
 
 .post_content {
@@ -311,6 +310,11 @@ select {
     position: relative;
 }
 
+.image-left img {
+    width: 150px;
+    height: 150px;
+}
+
 .about-right {
     width: 70%;
     margin-left: 50px;
@@ -404,7 +408,7 @@ select {
     position: fixed;
     bottom: 30px;
     right: 50px;
-    z-index: 99;
+    z-index: 3;
     cursor: pointer;
     width: 56px;
     height: 56px;
@@ -534,3 +538,144 @@ select {
     height: 60px;
     border-radius: 50%;
 }
+
+#hamburger {
+    display: none;
+}
+
+#dropdown-nav {
+    display: none;
+}
+
+
+
+
+
+@media (481px <= width <= 768px) {
+    body {
+        background: green;
+    }
+    main {
+        width: 60%;
+    }
+    #username {
+        display: none;   
+    }
+
+    #hamburger {
+        display: flex;
+        border: 1px solid #fff;
+        border-radius: 2px;
+        padding: 4px;
+        position: relative;
+        z-index: 4;   
+    }
+
+    #hamburger svg {
+        width: 26px;
+        height: 26px;
+        fill: #fff;
+    }
+
+    #hamburger svg:hover {
+        fill: rgb(221, 211, 211);
+    }
+
+    .navbar {
+        display: none;
+    }
+    
+    #dropdown-nav {
+        flex-direction: column;
+        background: #fff;
+        position: absolute;
+        top: 40px;
+        gap: 12px;
+        right: -40px;
+        /* padding: 3px 15px; */
+    }
+
+    #dropdown-nav a{
+        text-decoration: none;
+        color: tomato;
+        padding: 5px 10px;
+    }
+    #dropdown-nav a:hover{
+        background: tomato;
+        color: #fff;
+    }
+    .image-left img {
+        width: 120px;
+        height: 120px;
+    }
+    .mini-nav > h4 {
+        font-size: 15px;
+    }
+}
+
+
+
+@media (width <= 480px) {
+    main {
+        width: 70%;
+    }
+
+    body {
+        background: #aaa;
+    }
+    .image-left img {
+        width: 120px;
+        height: 120px;
+    }
+
+    .mini-nav > h4 {
+        cursor: pointer;
+        font-size: 14px;
+    }
+    #username {
+        display: none;
+    }
+    #hamburger {
+        display: flex;
+        border: 1px solid #fff;
+        border-radius: 2px;
+        padding: 4px;
+        position: relative;
+        z-index: 4;   
+    }
+
+    #hamburger svg {
+        width: 26px;
+        height: 26px;
+        fill: #fff;
+    }
+
+    #hamburger svg:hover {
+        fill: rgb(221, 211, 211);
+    }
+
+    .navbar {
+        display: none;
+    }
+    
+    #dropdown-nav {
+        flex-direction: column;
+        background: #fff;
+        position: absolute;
+        top: 40px;
+        gap: 12px;
+        right: -40px;
+        /* padding: 3px 15px; */
+    }
+
+    #dropdown-nav a{
+        text-decoration: none;
+        color: tomato;
+        padding: 5px 10px;
+    }
+    #dropdown-nav a:hover{
+        background: tomato;
+        color: #fff;
+    }
+}
+

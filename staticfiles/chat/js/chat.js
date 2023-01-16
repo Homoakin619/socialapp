@@ -5,7 +5,7 @@ const messageInput = document.querySelector('#message-input');
 const chatOutput = document.querySelector('#chat-body');
 
 const socket = new WebSocket(
-    'wss://' + window.location.host + '/ws/' + friendId + '/'
+    'ws://' + window.location.host + '/ws/' + friendId + '/'
 )
 
 socket.onopen = function(e) {
