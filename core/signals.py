@@ -13,9 +13,10 @@ def comment_notification(sender,instance,**kwargs):
     comment_creator = instance.user
     post = instance.post_id
     post_creator = post.user
-    notification_instance = Notification.objects.create(notified_user=post_creator,post_creator=comment_creator,
+    if comment_creator != post_creator:
+        notification_instance = Notification.objects.create(subscriber=post_creator,post_creator=comment_creator,
                                                 post_id=post.pk,notification_type='COMMENT',comment_id=instance.pk)
-    notification_instance.save()
+        notification_instance.save()
 
 @receiver(post_save,sender=Post)
 def create_notification(sender,instance,**kwargs):
