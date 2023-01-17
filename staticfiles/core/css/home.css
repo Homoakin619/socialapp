@@ -136,6 +136,7 @@ form {
 @media (max-width:480px) {
     .brand {
         font-size: 20px;
+        width: 60%;
     }
 
     .index_nav {
@@ -161,6 +162,7 @@ form {
 
     .navig {
         font-size: 16px;
+        padding: 5px;
     }
 
 }
