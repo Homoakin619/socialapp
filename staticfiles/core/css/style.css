@@ -560,9 +560,6 @@ select {
 
 
 @media (481px <= width <= 768px) {
-    body {
-        background-color: green;
-    }
     main {
         width: 60%;
     }
@@ -625,9 +622,7 @@ select {
 
 
 @media (max-width:480px) {
-    body {
-        background: blue;
-    }
+
     main {
         width: 90%;
     }
@@ -648,6 +643,19 @@ select {
 
     .post > .post-footer {
         width: 90%;
+    }
+
+    .delete_modal {
+        width: 70%;
+        top: 10px;
+        left: 15%;
+    }
+
+    .post p {
+        font-size: 14px;
+    }
+    .post small {
+        font-size: 10px;
     }
 
     .image-left img {
@@ -697,8 +705,15 @@ select {
 
     .edit-btn {
         bottom: 0;
-        right: -10px;
+        right: -20px;
         font-size: 10px;
+    }
+
+    .mini-nav {
+        justify-content: space-around;
+        gap: 20px;
+        overflow-x: auto;
+        
     }
 
     .create-post h4 {
