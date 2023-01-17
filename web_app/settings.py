@@ -120,8 +120,7 @@ CHANNEL_LAYERS = {
     'default':{
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG':{
-            'hosts': [REDIS_URL,]
-            # 'hosts': [('localhost',6379)]
+            'hosts': [('localhost',6379)]
         }
     }
 }
@@ -153,13 +152,64 @@ if not DEBUG:
         "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
     }
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('EMAIL_HOST')
-EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
+    CHANNEL_LAYERS = {
+        'default':{
+            'BACKEND': 'channels_redis.core.RedisChannelLayer',
+            'CONFIG':{
+                'hosts': [REDIS_URL,]
+            }
+        }
+    }
 
+    EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+    EMAIL_HOST = os.environ.get('EMAIL_HOST')
+    EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+    EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+    EMAIL_PORT = 587
+    EMAIL_USE_TLS = True
+
+    LOGGING = {
+            'version': 1,
+            'disable_existing_loggers': True,
+            'formatters': {
+                'verbose': {
+                    'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+                    'datefmt' : "%d/%b/%Y %H:%M:%S"
+                },
+                'simple': {
+                    'format': '%(levelname)s %(message)s'
+                },
+            },
+            'handlers': {
+                'file': {
+                    'level': 'DEBUG',
+                    'class': 'logging.FileHandler',
+                    # 'filters': ['require_debug_false'],
+                    'filename': 'mysite.log',
+                    'formatter': 'verbose'
+                },
+            },
+            'loggers': {
+                'django': {
+                    'handlers':['file'],
+                    'propagate': True,
+                    'level':'DEBUG',
+                },
+                'MYAPP': {
+                    'handlers': ['file'],
+                    'level': 'DEBUG',
+                },
+            }
+        }
+
+    CLOUDINARY_STORAGE = {
+        'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+        'API_KEY': os.environ.get('API_KEY'),
+        'API_SECRET': os.environ.get('API_SECRET'),
+    }
+
+
+    DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
 
@@ -205,50 +255,8 @@ STATIC_ROOT = os.path.join(BASE_DIR,'staticfiles')
 MEDIA_ROOT =  os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
-    'API_KEY': os.environ.get('API_KEY'),
-    'API_SECRET': os.environ.get('API_SECRET'),
-}
-
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': True,
-    'formatters': {
-        'verbose': {
-            'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-            'datefmt' : "%d/%b/%Y %H:%M:%S"
-        },
-        'simple': {
-            'format': '%(levelname)s %(message)s'
-        },
-    },
-    'handlers': {
-        'file': {
-            'level': 'DEBUG',
-            'class': 'logging.FileHandler',
-            # 'filters': ['require_debug_false'],
-            'filename': 'mysite.log',
-            'formatter': 'verbose'
-        },
-    },
-    'loggers': {
-        'django': {
-            'handlers':['file'],
-            'propagate': True,
-            'level':'DEBUG',
-        },
-        'MYAPP': {
-            'handlers': ['file'],
-            'level': 'DEBUG',
-        },
-    }
-}

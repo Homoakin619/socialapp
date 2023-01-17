@@ -58,7 +58,7 @@
             <div class="post-footer"></div>
         </div>
 
-        <span id="size"></span>
+        
         {% for post in all_posts %}
         <div class="post">
             {% if request.user == post.user %} 
@@ -151,8 +151,7 @@
 
 {% block extra_script %} 
 <script>
-    document.querySelector('#size').innerHTML = window.innerWidth
-    console.log(window.location.href)
+    
     let confirmDeleteModal = document.getElementsByClassName("delete_modal");
     let showDeleteModalBtn = document.getElementsByClassName("delete_btn");
     let abortDeleteBtn = document.getElementsByClassName("abort");

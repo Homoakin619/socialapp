@@ -40,6 +40,12 @@ body {
     gap: 5px;
 }
 
+.user a img{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+
 .navbar > a {
     padding: 20px 13px;
     text-decoration: none;
@@ -623,7 +629,25 @@ select {
         background: blue;
     }
     main {
-        width: 70%;
+        width: 90%;
+    }
+
+    .navbrand {
+        font-size: 16px;
+    }
+
+    .user a img{
+        width: 30px;
+        height: 30px;
+    }
+
+    .edits > a {
+        font-size: 12px;
+        padding: 3px 10px;
+    }
+
+    .post > .post-footer {
+        width: 90%;
     }
 
     .image-left img {
@@ -660,6 +684,30 @@ select {
     .navbar {
         display: none;
     }
+
+    .about-right li{
+        font-size: 15px;
+    }
+    
+    #img_btn {
+        bottom: 0;
+        left: -10px;
+        font-size: 10px;
+    }
+
+    .edit-btn {
+        bottom: 0;
+        right: -10px;
+        font-size: 10px;
+    }
+
+    .create-post h4 {
+        font-size: 12px;
+    }
+
+    .main-post-head > .name > p {
+        font-size: 13px;
+    }
     
     #dropdown-nav {
         flex-direction: column;
@@ -668,7 +716,6 @@ select {
         top: 40px;
         gap: 12px;
         right: -40px;
-        /* padding: 3px 15px; */
     }
 
     #dropdown-nav a{

@@ -5,7 +5,7 @@
         {% if user.profile.image %}
             <div class="user">
                 <a href="{% url 'profile' request.user.pk %}">
-                    <img src="{{ user.profile.image.url }}" alt="" width="50" height="50" style="border-radius: 50%;" >
+                    <img src="{{ user.profile.image.url }}" alt="profile_pics" >
                 </a>
                 <h3 id="username">{{ request.user.first_name }} {{ request.user.last_name }} </h3>
             </div>
