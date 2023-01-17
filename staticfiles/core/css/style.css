@@ -551,8 +551,12 @@ select {
 
 
 
-@media (481px <= width <= 768px) {
 
+
+@media (481px <= width <= 768px) {
+    body {
+        background-color: green;
+    }
     main {
         width: 60%;
     }
@@ -613,7 +617,12 @@ select {
 
 
 
+
+
 @media (width <= 480px) {
+    body {
+        background: blue;
+    }
     main {
         width: 70%;
     }
