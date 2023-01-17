@@ -132,3 +132,35 @@ form {
     margin-bottom: 10px;
     flex-direction: column;
 }
+
+@media (max-width:480px) {
+    .brand {
+        font-size: 20px;
+    }
+
+    .index_nav {
+        margin: 0 20px;
+    }
+
+    .banner {
+        flex-direction: column;
+    }
+
+    .left {
+        display: none;
+    }
+
+    .right {
+        width: 80%;
+        margin: auto;
+    }
+
+    form {
+        width: 100%;
+    }
+
+    .navig {
+        font-size: 16px;
+    }
+
+}
