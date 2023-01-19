@@ -62,7 +62,6 @@
         <div class="top"><h3 id="user_space"></h3><span role="button" id="close">x</span></div>
         <div id="chat-body"> 
          
-            <h5 class="divider line one-line" >Date</h5>
          
         </div>
 
@@ -74,4 +73,4 @@
 {% endif %}
     {{request.user.username|json_script:"current_user"}}
     {{ profile.id|json_script:"friend" }}
-    <!-- <script src="{% static 'chat/js/chat.js' %}"></script> -->
+    

@@ -276,6 +276,7 @@ def chat_user(request):
         
         today_date = date.today()
         chat_date = ChatDate.objects.all()
+        chat_date = serialize("json",list(chat_date))
         messages = serialize('json',list(messages_qs))
         read = read_message(request,name)
         read = json.loads(read.content)
@@ -285,7 +286,8 @@ def chat_user(request):
             'today_date':today_date,
             'friend':name,
             'id':friend.id,
-            'status':read['status']
+            'status':read['status'],
+            'chat_date':chat_date
         })
 
 

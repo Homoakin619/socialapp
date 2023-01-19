@@ -11,27 +11,49 @@ const messageInput = document.querySelector('#message-input');
 
 let chat_url = `${window.location.protocol}//${window.location.host}/chat_user/`;
 
-function get_time(value) {
-    date = new Date(value);
-    let x = date.getHours();
-    let minute = date.getMinutes();
-    let hour;
-    if (x>12){
-        hour = x % 12;
-    }else{
-        hour = x;
+class DateFormatter {
+    date;
+    constructor(date) {
+        this.date = date;
     }
-    
-    let period;
-    if (hour > 0) {
-        period = 'pm';
-    }else if(hour == 0){
-        period = 'am';
-    }else{
-        period = 'am';
+
+    convertDate() {
+        let date_object = new Date(this.date);
+        return date_object;
     }
-    let result = `${hour}:${minute} ${period}`
-    return result
+
+    formatDate() {
+        let obj = this.convertDate();
+        let year = obj.getFullYear();
+        let month = obj.getMonth()+1;
+        let day = obj.getDate();
+        const result = `${year}-${month}-${day}`;
+
+        return result;
+    }
+
+    formatTime() {
+        let obj = this.convertDate()
+        let hourInstance = obj.getHours();
+        let minute = obj.getMinutes();
+        let hour;
+        if (hourInstance > 12){
+            hour = hourInstance % 12;
+        } else {
+            hour = hourInstance;
+        }
+        
+        let period;
+        if (hour > 0) {
+            period = 'pm';
+        }else if(hour == 0){
+            period = 'am';
+        }else{
+            period = 'am';
+        }
+        let timeResult = `${hour}:${minute} ${period}`
+        return timeResult
+    }
 }
 
 
@@ -54,42 +76,19 @@ if(friendId) {
                 .then((data) => {
                     user_space.innerHTML = `${data.friend}`;
                     let chat_messages = JSON.parse(data.messages);
+                    let dates = JSON.parse(data.chat_date)
                     let id = data.id;
-                    console.log(Object.keys(data));
                     runSocket(id);
-                    // console.log();
-                    for (let message of chat_messages) {
-                        var time = message['fields']['timestamp']
-                    
-                        if(message['fields']['sender'] == user){
-                            chatOutput.innerHTML += `
-                                <div class="message end">
-                                    <div class="right">
-                                    <span>${ message['fields']['message'] }</span>
-                                    <small>${ get_time(time) }</small>
-                                    </div>
-                                </div>`
-                        }else {
-                            chatOutput.innerHTML += `
-                                <div class="message ">
-                                    <div class="left">
-                                    <span>${ message['fields']['message'] }</span>
-                                    <small>${ get_time(time) }</small>
-                                    </div>
-                                </div>`
-                        }
-                        
-                    }
+                    let chats = displayChats(chat_messages,dates,user);
+                    chatOutput.innerHTML += chats;
                     chatGround.style.display = 'flex'; 
                 })
-                // .then((next) => runProcess(userId))
         }
     
     for (message of messages) {
             message.addEventListener('click',makeRequest)
         }
-    
-}
+};
 
 
 function runSocket(id) {
@@ -187,3 +186,45 @@ function runProcess(senderId) {
         });
 }
 
+
+
+function displayChats(messages,dates,user) {
+    let output = '';
+    const formatter = new DateFormatter()
+    const dateFormatter = new DateFormatter()
+    for (let date of dates) {
+        let dateIns;
+        dateFormatter.date = date['fields']['timestamp'];
+        dateIns = dateFormatter.formatDate()
+        output += `<h5 class="divider line one-line" >${dateIns}</h5>`;
+        for(let message of messages) {
+            let timeInstance = message['fields']['timestamp'];
+            formatter.date = timeInstance;
+            let messageDate = formatter.formatDate();
+    
+            console.log(`ChatDate is => ${dateIns} : MessageDate is => ${messageDate}`)
+            if (dateIns == messageDate) {
+                console.log('I am here')
+                if (message['fields']['sender'] == user) {
+                    output += `
+                        <div class="message end">
+                            <div class="right">
+                            <span>${ message['fields']['message'] }</span>
+                            <small>${ formatter.formatTime() }</small>
+                            </div>
+                        </div>`;
+                } else {
+                    output += `
+                        <div class="message ">
+                            <div class="left">
+                            <span>${ message['fields']['message'] }</span>
+                            <small>${ formatter.formatTime() }</small>
+                            </div>
+                        </div>`;
+                }
+                  
+            }
+        }
+    }
+    return output;
+}
