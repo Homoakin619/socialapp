@@ -12,7 +12,7 @@
             {% else %}
         <div class="user">
             <a href="{% url 'profile' request.user.pk %}">
-                <img src="/static/core/images/img.jpg" alt="" width="50" height="50" style="border-radius: 50%;" >
+                <img src="/static/core/images/profile.png" alt="" width="50" height="50" style="border-radius: 50%;" >
             </a>
             <h3>{{ request.user.first_name }} {{ request.user.last_name }} </h3>
         </div>
