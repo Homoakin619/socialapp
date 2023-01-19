@@ -61,10 +61,3 @@ class Notify(models.Model):
     post_creator = models.ForeignKey(settings.AUTH_USER_MODEL,related_name='subscribed_to',on_delete=models.CASCADE)
     
 
-# class Reply(models.Model):
-#     parent_comment = models.ForeignKey(Comment,on_delete=models.CASCADE)
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL,on_delete=models.CASCADE)
-#     content = models.TextField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-    
-

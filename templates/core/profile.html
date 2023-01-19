@@ -377,9 +377,10 @@
             {% endfor %}
         </div>
     </div>
+    {% include 'chat/chat.html' %}
     {{ profile.id|json_script:'profile_id'}}
     {{ status|json_script:'status'}}
-    {% include 'chat/chat.html' %}
+    
     
     
 </main>
@@ -478,15 +479,13 @@
 
 </script>
 {% if request.user.id != profile.id %}
-<script src="{% static 'chat/js/chat.js' %}"></script>            
+<script src="{% static 'chat/js/chat_script.js' %}"></script>            
 {% endif %}
 
 <script>
     const profileId = JSON.parse(document.querySelector('#profile_id').textContent);
-    
     const chatBtn = document.querySelector('#chat_user');
     const chatArea = document.querySelector('#chat-ground');
-    const closeBtn = document.querySelector('#close');
     const notificationBtn = document.querySelector('#toggle-notification');
     var state = JSON.parse(document.querySelector('#status').textContent);
 
@@ -533,9 +532,6 @@
 
     
     }
-
-    
-
 </script>
 
 {% endblock %}

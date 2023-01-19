@@ -7,8 +7,9 @@ from django.views import generic
 from django.http import HttpResponseRedirect,JsonResponse
 from django.urls import reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.serializers import serialize 
 
-from chat.models import ChatDate,ChatMessage
+from chat.models import ChatDate,ChatMessage,Message
 
 from core.models import Notification, Post,Comment,Notify
 from core.forms import PostForm,ProfileForm,EditProfileForm,EditProfileImageForm,CommentForm
@@ -109,7 +110,8 @@ class ProfileView(generic.View):
         else: result = False
         
         
-        context = {'status':result,
+        context = {'status':result,'profile':True,
+
                     'activities':activities,'my_posts':posts.order_by('-created'),
                     'form':form,'other_posts':all_posts,'user':user,
                     'profile_form':profile_form,'image_form':image_form,
@@ -190,6 +192,7 @@ class NotificationView(generic.View):
         return render(request,self.template_name,context)
 
 
+
 def subscribe_notification(request,id):
     subscriber = request.user
     creator = get_object_or_404(User,id=id)
@@ -197,19 +200,28 @@ def subscribe_notification(request,id):
     subscribe_user.save()
     return JsonResponse({'respons':'suscribed successfully'})
 
+
 def disable_notification(request,id):
     subscriber = request.user
     creator = get_object_or_404(User,id=id)
     subscribe_user = Notify.objects.get(subscriber=subscriber,post_creator=creator)
     subscribe_user.delete()
     return JsonResponse({'response':'successfully unsuscribed'})
-    
+
+
+def message_view(request):
+    messages = Message.objects.filter(receiver=request.user)
+    context = {'messages':messages}
+    return render(request,'core/messages.html',context)
+
+
 
 def create_comment(request,form):
     if form.is_valid():
         form.save()
         return True
     else: return False
+
 
 def view_notification(request,pk):
     try:
@@ -222,6 +234,7 @@ def view_notification(request,pk):
         return HttpResponseRedirect(reverse('view_notification',kwargs={'pk':pk}))
     except:
         print("request failed")
+
 
 def notification_view(request,pk):
     notification = get_object_or_404(Notification,pk=pk)
@@ -237,6 +250,7 @@ def notification_view(request,pk):
     except:
         print('failed request')
 
+
 @csrf_exempt
 def change_notification(request):
     request_body = json.loads(request.body.decode('utf-8'))
@@ -244,7 +258,62 @@ def change_notification(request):
     notification = get_object_or_404(Notification,pk=queryID)
     notification.is_read = True
     notification.save()
-    return JsonResponse({'hello':'hello there'})
+    return JsonResponse({'status':'notification viewed'})
+
+
+@csrf_exempt
+def chat_user(request):
+        user_id = request.user.id
+        request_body = json.loads(request.body.decode('utf-8'))
+        name = request_body['name']
+        friend = User.objects.get(username=name)
+    
+        if user_id > friend.id:
+            chat_room = f'chat_{user_id}-{friend.id}'
+        else:
+            chat_room = f'chat_{friend.id}-{user_id}'
+        messages_qs = ChatMessage.objects.filter(chatroom=chat_room).order_by('-id')
+        
+        today_date = date.today()
+        chat_date = ChatDate.objects.all()
+        messages = serialize('json',list(messages_qs))
+        read = read_message(request,name)
+        read = json.loads(read.content)
+        
+        return JsonResponse({
+            'messages':messages,
+            'today_date':today_date,
+            'friend':name,
+            'id':friend.id,
+            'status':read['status']
+        })
+
+
+
+@csrf_exempt
+def read_message(request,username):
+    try:
+        # print(username)
+        friend = get_object_or_404(User,username=username)
+        message_instance = Message.objects.filter(receiver=request.user,sender=friend,is_read=False)
+        
+        for message in message_instance:
+            message.is_read = True
+            message.save()
+        return JsonResponse({'status':'success reading message'})
+    except:
+        return JsonResponse({'status':'failed'})
+
+
+@csrf_exempt
+def get_counts(request):
+    message_query = Message.objects.filter(receiver=request.user,is_read=False)
+    notification_query = Notification.objects.filter(subscriber=request.user,is_read=False)
+    return JsonResponse({
+        'message_count':message_query.count(),
+        'notification_count':notification_query.count()
+                        })
+
 
 def logout_user(request):
     logout(request)

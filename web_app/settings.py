@@ -38,7 +38,6 @@ ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = [
     'https://socialapp.up.railway.app',
     'http://localhost:8000',
-
 ]
 
 # SECURE_SSL_REDIRECT = True

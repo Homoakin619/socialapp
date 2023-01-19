@@ -1,19 +1,22 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
 from channels.db import database_sync_to_async
 
+from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
+
 import json
 from datetime import date
-from chat.models import ChatDate,ChatMessage
+from chat.models import ChatDate,ChatMessage,Message
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
     async def connect(self):
         user_id = self.scope['user'].id
-        friend_id = self.scope['url_route']['kwargs']['id']
-        if int(user_id) > int(friend_id):
-            room_name = f'{user_id}-{friend_id}'
+        self.friend_id = self.scope['url_route']['kwargs']['id']
+        if int(user_id) > int(self.friend_id):
+            room_name = f'{user_id}-{self.friend_id}'
         else:
-            room_name = f'{friend_id}-{user_id}'
+            room_name = f'{self.friend_id}-{user_id}'
         self.room_group_name = 'chat_%s' % room_name
 
         await self.channel_layer.group_add(
@@ -39,7 +42,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
         await self.save_message(data['username'],data['message'],self.room_group_name)
-        
+        await self.notify_message(
+            self.friend_id,
+            self.scope['user'],
+            data['message']
+        )
 
     async def chat_message(self,event):
         await self.send(
@@ -56,3 +63,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         chat = ChatMessage.objects.create(date=chatdate,sender=sender,
                                 chatroom=chatroom,message=message)
         chat.save()
+
+    @database_sync_to_async
+    def notify_message(self,receiver,sender,message):
+        
+        receiver = get_object_or_404(User,id=int(receiver))
+        message_obj = Message.objects.create(
+            receiver=receiver,sender=sender.username,content=message
+        )
+        message_obj.save()

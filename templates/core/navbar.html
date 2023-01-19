@@ -39,7 +39,7 @@
                     </svg>
                 </svg>
             </a>
-            <a href="{% url 'notification' %}">
+            <a href="{% url 'notification' %}" id="ntf">
                 
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="288" height="288">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24">
@@ -47,14 +47,16 @@
                         <path fill="" d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.89 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-1.29 1.29c-.63.63-.19 1.71.7 1.71h13.17c.89 0 1.34-1.08.71-1.71L18 16z" class="color000 svgShape"/>
                     </svg>    
                 </svg>
+                <span id="notificationcount"></span>
             </a>
-            <a href="" >
+            <a href="{% url 'all_messages' %}" id="msg" >
             
                 <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="30" height="30">
                     <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 32 32">
                         <path fill="" d="M27 5H5a3 3 0 0 0-3 3v.4l13.64 7.33a1 1 0 0 0 .78 0L30 8.4V8a3 3 0 0 0-3-3zm2.68 20.32A3 3 0 0 0 30 24V10.67l-9.1 4.89zM2 10.67V24a3 3 0 0 0 .32 1.32l8.78-9.76zm15.31 6.82a3.16 3.16 0 0 1-1.33.3 3 3 0 0 1-1.24-.27l-1.83-1-9.15 10.2A3 3 0 0 0 5 27h22a3 3 0 0 0 1.25-.28l-9.17-10.18z" class="color000 svgShape" data-name="Message"/>
                     </svg>
                 </svg>
+                <span id="msgcount"></span>
             </a>
             
             <a href="{% url 'logout' %}" >
@@ -73,7 +75,7 @@
 <script>
     let hamburger = document.querySelector('#hamburger');
     let navDropdown = document.querySelector('#dropdown-nav');
-    let count = 1
+    let count = 1;
     get_count =() => {
         return count
     };
@@ -90,3 +92,25 @@
         
     }
 </script>
+
+{% if request.user.is_authenticated %} 
+<script>
+    let messagesCount = document.querySelector('#msgcount');
+    let notificationsCount = document.querySelector('#notificationcount');
+    var url = `${window.location.protocol}//${window.location.host}/notifications/unread/all/`;
+    window.onload =
+        fetch(url,{
+                method: 'GET',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+                })
+                .then((response) => response.json() )
+                .then((data) => {
+                    console.log(data)
+                    messagesCount.innerHTML = data.message_count
+                    notificationsCount.innerHTML = data.notification_count
+                });
+</script>
+{% endif %}

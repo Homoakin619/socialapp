@@ -18,7 +18,7 @@
 <div class="post">
    <div class="notifications">
     {% for notification in notifications %} 
-       <a role="button" class="notification" {% if notification.is_read == False %} style="background: #D4E9FD;" {% endif %} id="{{ notification.pk }}" >
+       <a role="button" class="notification" {% if notification.is_read is False %} style="background: #D4E9FD;" {% endif %} id="{{ notification.pk }}" >
         {{ notification|get_content }}
        </a>
     {% endfor %}

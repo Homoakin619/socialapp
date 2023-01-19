@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %} 
+
+{% load static %}
+{% load content_view %}
+{% block extra_css %} 
+<link rel="stylesheet" href="{% static 'core/css/style.css' %}">
+<style>
+    .notification {
+        cursor: pointer;
+    }
+</style>
+{% endblock %}
+
+{% block content %} 
+<main>
+    
+
+<div class="post">
+   <div class="notifications">
+    {% for message in messages %} 
+       <a role="button" class="message" {% if not message.is_read %} style="background: #D4E9FD;" {% endif %} id="{{ message.sender }}" >
+        You have a message from {{ message.sender }} -- {{ message.is_read }}
+       </a>
+    {% endfor %}
+   </div>
+</div>
+</main>
+{% include 'chat/chat.html' %}
+{% endblock %}
+
+{% block extra_script %} 
+
+<script src="{% static 'chat/js/chat_script.js' %}"></script>
+<!-- <script src="{% static 'chat/js/chat.js' %}"></script>   -->
+{% endblock %}

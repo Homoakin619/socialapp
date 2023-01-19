@@ -525,7 +525,7 @@ select {
     width: 95%;
 } */
 
-.notification {
+.notification,.message {
     text-decoration: none;
     color: #000;
     display: flex;
@@ -535,11 +535,12 @@ select {
     padding-bottom: 10px;
 }
 
-.notification:hover {
+.notification:hover,.message:hover {
     background: #a8d4ff;
+    cursor: pointer;
 }
 
-.notification img {
+.notification img,.message img {
     width: 60px;
     height: 60px;
     border-radius: 50%;
@@ -553,7 +554,22 @@ select {
     display: none;
 }
 
+#msg,#ntf {
+    position: relative;
+}
 
+#notificationcount,#msgcount {
+    background: #fff;
+    position: absolute;
+    top: 0;
+    right: 10px;
+    border: 1px solid #ccc;
+    border-radius: 7px;
+    color: tomato;
+    padding: 2px 2px;
+    font-size: 14px;
+    font-weight: bold;
+}
 
 
 
