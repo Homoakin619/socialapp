@@ -19,6 +19,7 @@ from django.urls import path
 http_application = get_asgi_application()
 
 from chat.consumers import ChatConsumer
+from core.consumers import RefreshConsumer
 
 
 application = ProtocolTypeRouter({
@@ -26,6 +27,7 @@ application = ProtocolTypeRouter({
     'websocket': AuthMiddlewareStack(
         URLRouter([
             path('ws/<int:id>/',ChatConsumer.as_asgi()),
+            path('ws/refresh/<int:id>/',RefreshConsumer.as_asgi())
         ])
     )
 })

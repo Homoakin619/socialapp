@@ -93,7 +93,7 @@ if(friendId) {
 
 function runSocket(id) {
     const socket = new WebSocket(
-        'wss://' + window.location.host + '/ws/' + id + '/'
+        'ws://' + window.location.host + '/ws/' + id + '/'
     )
     
     socket.onopen = function(e) {
@@ -102,6 +102,7 @@ function runSocket(id) {
     
     socket.onmessage = function(e) {
         const result = JSON.parse(e.data)
+        refreshMessage();
         var date = new Date()
     
         let get_Hour = (date) => {
@@ -152,7 +153,7 @@ function runSocket(id) {
                 'message':message
             })
         );
-        messageInput.value = ''
+        messageInput.value = '';
     }
 }
 

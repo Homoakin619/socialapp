@@ -94,29 +94,3 @@
         
     }
 </script>
-
-{% if request.user.is_authenticated %} 
-<script>
-    let messagesCount = document.querySelector('#msgcount');
-    let msgCount = document.querySelector('#msgs');
-    let notificationsCount = document.querySelector('#notificationcount');
-    let ntfCount = document.querySelector('#ntfs');
-    var url = `${window.location.protocol}//${window.location.host}/notifications/unread/all/`;
-    window.onload =
-        fetch(url,{
-                method: 'GET',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-                })
-                .then((response) => response.json() )
-                .then((data) => {
-                    console.log(data)
-                    messagesCount.innerHTML = data.message_count;
-                    msgCount.innerHTML = data.message_count;
-                    notificationsCount.innerHTML = data.notification_count;
-                    ntfCount.innerHTML = data.notification_count;
-                });
-</script>
-{% endif %}
