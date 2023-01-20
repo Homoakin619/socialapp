@@ -17,17 +17,19 @@
             <h3>{{ request.user.first_name }} {{ request.user.last_name }} </h3>
         </div>
         {% endif %}
+
         <h3 class="navbrand">MAJMAU-L-ULOOM</h3>
         <span id="hamburger" role="button" >
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="" class="bi bi-list" viewBox="0 0 16 16">
                 <path fill-rule="evenodd" d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5z"/>
             </svg>
+
             <div id="dropdown-nav">
                 <a href="{% url 'home' %}">Home</a>
-                <a href="{% url 'notification' %}">Notifications</a>
-                <a href="">Messages</a>
+                <a href="{% url 'notification' %}"> Notifications </a>
+                <a href="{% url 'all_messages' %}"> Messages </a>
                 <span></span>
-                <a href="{% url 'logout' %}">Logout</a>
+                <a href="{% url 'logout' %}"> Logout </a>
             </div>
         </span>
         <div class="navbar">

@@ -681,9 +681,6 @@ select {
         padding: 3px 10px;
     }
 
-    .post > .post-footer {
-        width: 90%;
-    }
 
     .delete_modal {
         width: 70%;
