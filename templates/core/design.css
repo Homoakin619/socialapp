@@ -49,3 +49,18 @@ section {
     padding-top: 8px;
     height: 50px;
 }
+
+.image-view-centered {
+    object-position: center;
+    object-fit: cover;
+}
+
+.update-components-image__image {
+    width: 100%;
+    height: 100%;
+}
+
+.ivm-view-attr__img--centered {
+    background-position: 50%;
+    background-size: cover;
+}

@@ -13,7 +13,7 @@
             <div class="main-post-head">
                 {% if request.user.profile.image %}
                     <div class="image"> 
-                        <a href=""> 
+                        <a href="{% url 'profile' request.user.pk %}"> 
                             <img src="{{ request.user.profile.image.url }}" alt="">
                         </a>
                     </div>
@@ -35,7 +35,7 @@
                                 {{ form.tag }}
                             </div>
                             <div>
-                                <!-- <input type="file" id="file-btn" hidden> -->
+                                
                                 {{ form.image }}
                                 <label for="id_image" style="cursor: pointer;">
                                     <svg xmlns="http://www.w3.org/2000/svg" enable-background="new 0 0 24 24" viewBox="0 0 24 24" width="30" height="30">
@@ -54,8 +54,6 @@
 
 
             </div>
-            <div class="post-body"></div>
-            <div class="post-footer"></div>
         </div>
 
         
@@ -75,25 +73,40 @@
                 </div>
             </div>
             {% endif %}
+
             <div class="post-head">
                 {% if post.user.profile.image %}
-                <div class="image"> <a href="{% url 'profile' post.user.pk %}"> <img src="{{ post.user.profile.image.url }}" alt=""></a> </div>
+                <div class="image"> 
+                    <a href="{% url 'profile' post.user.pk %}"> 
+                        <img src="{{ post.user.profile.image.url }}" alt="">
+                    </a> 
+                </div>
                 {% else %}
                 <div class="hel"><a href="{% url 'profile' post.user.pk %}"> <div class="def-image"></div></a></div>
                 {% endif %}
-                <div class="name">{{ post.user.username }}  </div>
-            </div>
-            <div class="post-body">
-                {% if post.image %} 
-                    <div class="img-div"><img src="{{ post.image.url }}" alt=""></div>
-                {% endif %}
-                <div><p>{{ post.content }}</p></div>
-                <div>
+                <div class="name">
+                    <p>{{ post.user.username }}</p>
                     <small>{{ post.created }}</small>
                 </div>
             </div>
-            <div class="line"></div>
-            <div class="post-footer">
+
+            <div class="post-body">
+                
+                <div>
+                    <p>{{ post.content }}</p>
+                </div>
+        
+            </div>
+
+            {% if post.image %} 
+            <img class="image-view-centered update-components-image__image ivm-view-attr__img--centered" src="{{ post.image.url }}" alt="">
+            {% endif %}
+
+            <div class="post-footer" {% if post.comment_set.all %} style="justify-content: space-between;" {% else %} style="justify-content: flex-end;" {% endif %}>
+                {% if post.comment_set.all %} 
+                <span role="button" class="showcomment" >Show Comments</span>
+                {% endif %}
+
                 <a role="button" class="comment" >
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:svgjs="http://svgjs.com/svgjs" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25">
                         <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 16 16">
@@ -104,6 +117,7 @@
                 </a>
 
             </div>
+
             <div>
                 <form action="" method="post" class="commentForms">
                     {% csrf_token %}
@@ -115,7 +129,7 @@
             </div>
 
             {% if post.comment_set.all %} 
-            <span role="button" class="showcomment" >Show Comments</span>
+            
             <div class="comment-space">
                 <span role="button" class="hide-comment" >Hide Comments</span>
                 {% for comment in post.comment_set.all %}

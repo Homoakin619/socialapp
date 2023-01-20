@@ -12,8 +12,9 @@
  /* GENERAL STYLING FOR ALL PAGAES */
 
 body {
-    /* background: #f3f2ef; */
-    background: #f9fafb;
+    background: rgba(243, 242, 239,0.3);
+    /* background: #f9fafb; */
+    /* #F3F2EF */
     /* --cool-gray-20: #eef3f8; */
     /* --cool-gray-30: #dce6f1; */
 }
@@ -62,30 +63,17 @@ body {
 }
 
 main {
-    width: 40%;
+    width: 32%;
     margin: auto;
     margin-top: 75px;
     padding-top: 10px;
 }
 
-.main-post, .post {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    margin-bottom: 10px;
-    border: 1px solid rgb(226, 225, 225);
-}
 
 .main-post {
     margin-bottom: 20px;
     /* border: none; */
 }
-
-.main-post-head, .post-head {
-    display: flex;
-    gap: 15px;
-}
-
 
 .def-image {
     width: 50px;
@@ -113,20 +101,46 @@ main {
     color: rgb(156, 154, 154);
 }
 
+.main-post, .post {
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border: 1px solid rgb(226, 225, 225);
+}
+
+.main-post-head, .post-head {
+    display: flex;
+    gap: 15px;
+}
+
+.post {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 20%;
+    padding: 0;
+}
+
+.post-head,.post-body,.post-footer {
+    padding: 20px;
+}
+
+.post-body {
+    margin-top: -5px;
+    padding-top: 0;
+}
+
 .post .name {
-    margin-top: 10px;
+    margin-top: 5px;
 }
-.line {
-    border-top: 1px solid rgb(180,176,176);
-    margin-top: 10px;
-}
+
 .post > .post-footer {
-    padding-top: 3px;
     display: flex;
     gap: 50px;
     align-items: center;
-    justify-content: flex-end;
-    width: 80%;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    padding: 10px 20px;
 }
 
 .post_content {
@@ -136,7 +150,35 @@ main {
 .post > .post-footer  svg {
     align-self: flex-end;
     margin-top: 3px;
+    margin-right: 3px;
 }
+
+.post-body > div {
+    margin-top: 10px;
+}
+
+
+
+.line {
+    border-top: 1px solid rgb(180,176,176);
+    margin-top: 10px;
+}
+
+.image-view-centered {
+    object-position: center;
+    object-fit: cover;
+}
+
+.update-components-image__image {
+    width: 100%;
+    height: 100%;
+}
+
+.ivm-view-attr__img--centered {
+    background-position: 50%;
+    background-size: cover;
+}
+
 
 .comment,.like {
     display: flex;
@@ -183,8 +225,7 @@ textarea {
 .commentspace,.comment-space {
     padding: 0 10%;
     padding-top: 10px;
-    margin: 0 5%;
-    margin-top: 10px;
+    margin: 10px 5% 5px;
     border: 1px solid #ccc;
     display: none;
 }
@@ -226,16 +267,6 @@ select {
     border-radius: 5px;
 }
 
-.post {
-    position: relative;
-}
-
-.post > .post-body {
-    width: 80%;
-    margin: auto;
-    margin-top: 10px;
-}
-
 .edits {
     display: flex;
     position: absolute;
@@ -260,13 +291,6 @@ select {
     color: #fff;
 }
 
-.post-body > div {
-    margin-top: 10px;
-}
-
-.post {
-    padding-bottom: 5px;
-}
 
 .delete_modal {
     background: #fff;
