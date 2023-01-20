@@ -242,7 +242,7 @@ textarea {
 }
 
 .showcomment,.hide-comment {
-    color: blue;
+    color: #332424;
     cursor: pointer;
 }
 
@@ -636,8 +636,7 @@ select {
         position: absolute;
         top: 40px;
         gap: 12px;
-        right: -40px;
-        /* padding: 3px 15px; */
+        right: -20px;
     }
 
     #dropdown-nav a{
@@ -665,6 +664,13 @@ select {
 
     main {
         width: 90%;
+    }
+
+    #ntfs,#msgs {
+        background: tomato;
+        color: #fff;
+        padding: 3px 5px;
+        border-radius: 25px;
     }
 
     .navbrand {
@@ -769,19 +775,31 @@ select {
         flex-direction: column;
         background: #fff;
         position: absolute;
+        width: 140px;
         top: 40px;
-        gap: 12px;
-        right: -40px;
+        right: -20px;
+        box-shadow:  0 -3em 3em rgba(59, 57, 57, 0.1), 0 0 0 2px rgb(255, 255, 255),
+    0.3em 0.3em 1em rgba(0, 0, 0, 0.3);
     }
 
     #dropdown-nav a{
         text-decoration: none;
         color: tomato;
-        padding: 5px 10px;
+        padding: 8px 10px;
+        border-bottom: 1px solid rgba(0, 0, 0, 0.08);
     }
     #dropdown-nav a:hover{
         background: tomato;
         color: #fff;
     }
+
+    #dropdown-nav a:last-of-type {
+        border: none;
+    }
+
+    .post {
+        box-shadow: -7px 7px 18px 6px rgb(255 255 255), 0em 0em 1em 0px rgb(0 0 0 / 30%);
+    }
+    
 }
 
