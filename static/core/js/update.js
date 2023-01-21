@@ -11,7 +11,7 @@ let friendUsername;
 window.onload = refreshMessage();
 
 function refreshMessage()    {  
-    const refreshSocket = new WebSocket('ws://'+window.location.host +'/ws/refresh/'+Id+'/');
+    const refreshSocket = new WebSocket('wss://'+window.location.host +'/ws/refresh/'+Id+'/');
 
     refreshSocket.onopen = function(e) {
         console.log('REFRESH CONNECTION ESTABLISHED');
