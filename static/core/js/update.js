@@ -4,7 +4,9 @@ let notificationsCount = document.querySelector('#notificationcount');
 let ntfCount = document.querySelector('#ntfs');
 let loggedId = document.querySelector('#loggedId');
 let Id = loggedId.value;
-
+let chatHistory;
+let chatDates;
+let friendUsername;
 
 window.onload = refreshMessage();
 
@@ -13,13 +15,20 @@ function refreshMessage()    {
 
     refreshSocket.onopen = function(e) {
         console.log('REFRESH CONNECTION ESTABLISHED');
-        refreshSocket.send(JSON.stringify({'status':'refresh messages'}))
+        refreshSocket.send(JSON.stringify({'status':'refresh messages','friend_id':friendId}))
     }
     
 
     refreshSocket.onmessage = function(e) {
-        let returns = JSON.parse(e.data);
-        let messageCount = returns.count
+        let returned_data = JSON.parse(e.data);
+        let messageCount = returned_data.count;
+
+        chatHistory = returned_data.chat_history;
+        chatDates = returned_data.chat_dates;
+        friendUsername = returned_data.friend_username;
+        user_space.innerHTML = friendUsername;
+        
+
         messagesCount.innerHTML = messageCount;
         msgCount.innerHTML = messageCount;
     }

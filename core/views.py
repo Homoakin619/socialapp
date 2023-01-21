@@ -110,7 +110,7 @@ class ProfileView(generic.View):
         else: result = False
         
         
-        context = {'status':result,'profile':True,
+        context = {'status':result,'profile_stat':True,
 
                     'activities':activities,'my_posts':posts.order_by('-created'),
                     'form':form,'other_posts':all_posts,'user':user,

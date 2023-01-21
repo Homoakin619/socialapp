@@ -1,13 +1,13 @@
 const chatGround = document.querySelector('#chat-ground');
 const closeBtn = document.querySelector('#close');
-let messages = document.getElementsByClassName('message');
 const user = JSON.parse(document.querySelector('#current_user').textContent);
 const chatOutput = document.querySelector('#chat-body');
 const user_space = document.querySelector('#user_space');
-const friendId = JSON.parse(document.querySelector('#friend').textContent);
+const friendId = JSON.parse(document.querySelector('#friendId').textContent);
 const submitBtn = document.querySelector('#send-message');
 const messageInput = document.querySelector('#message-input');
 
+let messages = document.getElementsByClassName('message');
 
 let chat_url = `${window.location.protocol}//${window.location.host}/chat_user/`;
 
@@ -57,10 +57,12 @@ class DateFormatter {
 }
 
 
+//  Messages  Page Logic
+if(friendId) { //User is on profile page of a friend
 
-if(friendId) {
     runSocket(friendId);
 } else {
+    console.log('Not Available');
     function makeRequest() {
         const userId = this.id
         data = {name:userId}
@@ -78,10 +80,10 @@ if(friendId) {
                     let chat_messages = JSON.parse(data.messages);
                     let dates = JSON.parse(data.chat_date)
                     let id = data.id;
-                    runSocket(id);
                     let chats = displayChats(chat_messages,dates,user);
                     chatOutput.innerHTML += chats;
                     chatGround.style.display = 'flex'; 
+                    runSocket(id);
                 })
         }
     
@@ -92,12 +94,15 @@ if(friendId) {
 
 
 function runSocket(id) {
+    console.log('this is it ' +id);
     const socket = new WebSocket(
-        'ws://' + window.location.host + '/ws/' + id + '/'
+        'wss://' + window.location.host + '/ws/' + id + '/'
     )
     
     socket.onopen = function(e) {
-        console.log('CONNECTION ESTABLISHED')
+        console.log('CONNECTION ESTABLISHED');
+        let chats_history = displayChats(chatHistory,chatDates,user);
+        chatOutput.innerHTML += chats_history;
     }
     
     socket.onmessage = function(e) {
@@ -190,22 +195,26 @@ function runProcess(senderId) {
 
 
 function displayChats(messages,dates,user) {
+    // console.log(dates)
     let output = '';
     const formatter = new DateFormatter()
     const dateFormatter = new DateFormatter()
     for (let date of dates) {
         let dateIns;
+
         dateFormatter.date = date['fields']['timestamp'];
         dateIns = dateFormatter.formatDate()
-        output += `<h5 class="divider line one-line" >${dateIns}</h5>`;
+    
+        output += `<h5 class="divider line one-line" >${dateIns} </h5>`;
+
         for(let message of messages) {
             let timeInstance = message['fields']['timestamp'];
             formatter.date = timeInstance;
             let messageDate = formatter.formatDate();
     
-            console.log(`ChatDate is => ${dateIns} : MessageDate is => ${messageDate}`)
+            // console.log(`ChatDate is => ${dateIns} : MessageDate is => ${messageDate}`)
             if (dateIns == messageDate) {
-                console.log('I am here')
+                
                 if (message['fields']['sender'] == user) {
                     output += `
                         <div class="message end">
@@ -227,5 +236,6 @@ function displayChats(messages,dates,user) {
             }
         }
     }
+
     return output;
 }
