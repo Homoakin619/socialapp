@@ -24,7 +24,6 @@ class RefreshConsumer(AsyncWebsocketConsumer):
 
         if self.friend_id:
             return_value = await self.refresh_chat_history()
-            # print(return_value)
             history = return_value['history']
             dates = return_value['dates']
             dates = json.loads(dates)

@@ -7,15 +7,21 @@ let Id = loggedId.value;
 let chatHistory;
 let chatDates;
 let friendUsername;
+let friendId;
 
 window.onload = refreshMessage();
 
 function refreshMessage()    {  
+    
     const refreshSocket = new WebSocket('wss://'+window.location.host +'/ws/refresh/'+Id+'/');
 
     refreshSocket.onopen = function(e) {
         console.log('REFRESH CONNECTION ESTABLISHED');
-        refreshSocket.send(JSON.stringify({'status':'refresh messages','friend_id':friendId}))
+        if(friendId) {
+            refreshSocket.send(JSON.stringify({'status':'refresh messages','friend_id':friendId}))    
+        }
+        refreshSocket.send(JSON.stringify({'status':'refresh messages','friend_id':0}))    
+        
     }
     
 
@@ -26,11 +32,12 @@ function refreshMessage()    {
         chatHistory = returned_data.chat_history;
         chatDates = returned_data.chat_dates;
         friendUsername = returned_data.friend_username;
-        user_space.innerHTML = friendUsername;
         
-
+        
+        console.log('Count:' +messageCount)
         messagesCount.innerHTML = messageCount;
         msgCount.innerHTML = messageCount;
+        user_space.innerHTML = friendUsername;
     }
 
     refreshSocket.onclose = function(e) {

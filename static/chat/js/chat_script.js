@@ -1,12 +1,11 @@
 const chatGround = document.querySelector('#chat-ground');
 const closeBtn = document.querySelector('#close');
-const user = JSON.parse(document.querySelector('#current_user').textContent);
+const user = JSON.parse(document.querySelector('#current_user').textContent)  ;
 const chatOutput = document.querySelector('#chat-body');
 const user_space = document.querySelector('#user_space');
-const friendId = JSON.parse(document.querySelector('#friendId').textContent);
+friendId = JSON.parse(document.querySelector('#friendId').textContent) ;
 const submitBtn = document.querySelector('#send-message');
 const messageInput = document.querySelector('#message-input');
-
 let messages = document.getElementsByClassName('message');
 
 let chat_url = `${window.location.protocol}//${window.location.host}/chat_user/`;
