@@ -1,73 +1,143 @@
 let messagesCount = document.querySelector('#msgcount');
 let msgCount = document.querySelector('#msgs');
 let notificationsCount = document.querySelector('#notificationcount');
-let ntfCount = document.querySelector('#ntfs');
+let notifCount = document.querySelector('#ntfs');
 let loggedId = document.querySelector('#loggedId');
 let Id = loggedId.value;
 let chatHistory;
 let chatDates;
 let friendUsername;
-let friendId;
+var friendId;
 
-window.onload = refreshMessage();
+class RefreshSocketObject {
+    status;
+    constructor(status) {
+        
+        this.status = status
+    }
 
-function refreshMessage()    {  
-    
-    const refreshSocket = new WebSocket('wss://'+window.location.host +'/ws/refresh/'+Id+'/');
+    makeconnection() {
+        
+        this.Socket = new WebSocket('wss://'+window.location.host +'/ws/refresh/'+Id+'/');
 
-    refreshSocket.onopen = function(e) {
-        console.log('REFRESH CONNECTION ESTABLISHED');
-        if(friendId) {
-            refreshSocket.send(JSON.stringify({'status':'refresh messages','friend_id':friendId}))    
+        this.Socket.onclose = function(e) {
+            console.log('REFRESH CONNECTION CLOSED')
         }
-        refreshSocket.send(JSON.stringify({'status':'refresh messages','friend_id':0}))    
-        
-    }
     
+        this.Socket.onerror = function(e) {
+            console.log('AN ERROR OCCURED');
+            console.log(e);
+        }
 
-    refreshSocket.onmessage = function(e) {
-        let returned_data = JSON.parse(e.data);
-        let messageCount = returned_data.count;
+        let socket = this.Socket
 
-        chatHistory = returned_data.chat_history;
-        chatDates = returned_data.chat_dates;
-        friendUsername = returned_data.friend_username;
-        
-        
-        console.log('Count:' +messageCount)
-        messagesCount.innerHTML = messageCount;
-        msgCount.innerHTML = messageCount;
-        user_space.innerHTML = friendUsername;
-    }
+        this.Socket.onopen = function(e) {
+            console.log('REFRESH CONNECTION ESTABLISHED');
+            
+            if(friendId) {
+                
+                socket.send(JSON.stringify({'status':'refresh','friend_id':friendId}));
 
-    refreshSocket.onclose = function(e) {
-        console.log('REFRESH CONNECTION CLOSED')
-    }
-
-    refreshSocket.onerror = function(e) {
-        console.log('AN ERROR OCCURED');
-        console.log(e);
-    }
-}
-
+                socket.onmessage = function(e) {
+                    
+                    let returned_data = JSON.parse(e.data);
+                    
+                    let messageCount = returned_data.message_count;
+                    let NotificationCount = returned_data.notification_count;
+                    chatHistory = returned_data.chat_history;
+                    chatDates = returned_data.chat_dates;
     
+                    let chats_history = displayChats(chatHistory,chatDates,user);
+                    chatOutput.innerHTML += chats_history;
+                    friendUsername = returned_data.friend_username;
+                    
+                    messagesCount.innerHTML = messageCount;
+                    msgCount.innerHTML = messageCount;
+            
+                    notificationsCount.innerHTML = NotificationCount;
+                    notifCount.innerHTML = NotificationCount;
+            
+            
+                    if(user_space){
+                        user_space.innerHTML = friendUsername;}
+                    }
+                
+            }else{
+                
+                socket.send(JSON.stringify({'status':'refresh','friend_id':0}));
+
+                socket.onmessage = function(e) {
+                    
+                    let returned_data = JSON.parse(e.data);
+                    
+                    let messageCount = returned_data.message_count;
+                    let NotificationCount = returned_data.notification_count;
+                    
+                    messagesCount.innerHTML = messageCount;
+                    msgCount.innerHTML = messageCount;
+            
+                    notificationsCount.innerHTML = NotificationCount;
+                    notifCount.innerHTML = NotificationCount;
+            
+                    } // inner socket.onmessage ends here
+
+                } // IfElse Clause ends here
+            } // socket.onopen ends here
 
 
+        } // makeconnection() ends here
+        
 
-// window.onload = 
+    sendData(profileId=null,value=null,status=null) {
+        
+        if (status == 'refresh') {
+                
+                if(friendId) {
+                    this.Socket.send(JSON.stringify({'status':status,'friend_id':friendId}))    
+                }
+                this.Socket.send(JSON.stringify({'status':status,'friend_id':0}))   
 
-    // fetch(url,{
-    //         method: 'GET',
-    //         mode: 'no-cors',
-    //         headers: {
-    //             'Content-Type': 'application/json',
-    //         }
-    //         })
-    //         .then((response) => response.json() )
-    //         .then((data) => {
-    //             console.log(data)
-    //             messagesCount.innerHTML = data.message_count;
-    //             msgCount.innerHTML = data.message_count;
-    //             notificationsCount.innerHTML = data.notification_count;
-    //             ntfCount.innerHTML = data.notification_count;
-    //         });
+                this.Socket.onmessage = function(e) {
+                    let returned_data = JSON.parse(e.data);
+                    
+                    let messageCount = returned_data.message_count;
+                    let NotificationCount = returned_data.notification_count;
+                    chatHistory = returned_data.chat_history;
+                    chatDates = returned_data.chat_dates;
+                    friendUsername = returned_data.friend_username;
+                    
+                    messagesCount.innerHTML = messageCount;
+                    msgCount.innerHTML = messageCount;
+            
+                    notificationsCount.innerHTML = NotificationCount;
+                    notifCount.innerHTML = NotificationCount;
+            
+            
+                    if(user_space){
+                        user_space.innerHTML = friendUsername;}
+                    }
+
+            } else {
+                
+                this.Socket.send(JSON.stringify({
+                    'status':status,
+                    'value':value,
+                    'id':profileId
+                }));
+
+
+                this.Socket.onmessage = function(e) {
+                    let returned_data = JSON.parse(e.data);
+                    
+                    let response = returned_data.response;
+
+                    }
+
+            }
+            
+        }   // sendData ends here..
+
+    } // make connection ends here
+    
+const generalSocket = new RefreshSocketObject('refresh');
+window.onload = generalSocket.makeconnection()

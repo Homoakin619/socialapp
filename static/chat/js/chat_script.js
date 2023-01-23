@@ -3,7 +3,6 @@ const closeBtn = document.querySelector('#close');
 const user = JSON.parse(document.querySelector('#current_user').textContent)  ;
 const chatOutput = document.querySelector('#chat-body');
 const user_space = document.querySelector('#user_space');
-friendId = JSON.parse(document.querySelector('#friendId').textContent) ;
 const submitBtn = document.querySelector('#send-message');
 const messageInput = document.querySelector('#message-input');
 let messages = document.getElementsByClassName('message');
@@ -35,6 +34,9 @@ class DateFormatter {
         let obj = this.convertDate()
         let hourInstance = obj.getHours();
         let minute = obj.getMinutes();
+        if (String(minute).length == 1){
+            minute = '0' + String(minute)
+        }
         let hour;
         if (hourInstance > 12){
             hour = hourInstance % 12;
@@ -100,13 +102,11 @@ function runSocket(id) {
     
     socket.onopen = function(e) {
         console.log('CONNECTION ESTABLISHED');
-        let chats_history = displayChats(chatHistory,chatDates,user);
-        chatOutput.innerHTML += chats_history;
     }
     
     socket.onmessage = function(e) {
         const result = JSON.parse(e.data)
-        refreshMessage();
+        generalSocket.sendData(null,null,'refresh')
         var date = new Date()
     
         let get_Hour = (date) => {
@@ -141,6 +141,7 @@ function runSocket(id) {
                     </div>
                 </div>`
         }
+        chatOutput.scrollTop = chatOutput.scrollHeight;
     }
     
     socket.onerror = function(e) {
@@ -161,9 +162,11 @@ function runSocket(id) {
     }
 }
 
-messageInput.onkeyup = function(e) {
-    if(e.keyCode === 13) {
-        submitBtn.click();
+if (messageInput){
+    messageInput.onkeyup = function(e) {
+        if(e.keyCode === 13) {
+            submitBtn.click();
+        }
     }
 }
 
@@ -194,7 +197,6 @@ function runProcess(senderId) {
 
 
 function displayChats(messages,dates,user) {
-    // console.log(dates)
     let output = '';
     const formatter = new DateFormatter()
     const dateFormatter = new DateFormatter()

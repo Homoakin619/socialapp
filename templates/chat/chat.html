@@ -15,4 +15,7 @@
 
 
     {{ profile.id|json_script:"friendId" }}
+    <script>
+        friendId = JSON.parse(document.querySelector('#friendId').textContent) ;
+    </script>
     

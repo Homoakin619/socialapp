@@ -198,7 +198,7 @@ def subscribe_notification(request,id):
     creator = get_object_or_404(User,id=id)
     subscribe_user = Notify.objects.create(subscriber=subscriber,post_creator=creator)
     subscribe_user.save()
-    return JsonResponse({'respons':'suscribed successfully'})
+    return JsonResponse({'response':'suscribed successfully'})
 
 
 def disable_notification(request,id):
@@ -305,16 +305,6 @@ def read_message(request,username):
         return JsonResponse({'status':'success reading message'})
     except:
         return JsonResponse({'status':'failed'})
-
-
-@csrf_exempt
-def get_counts(request):
-    message_query = Message.objects.filter(receiver=request.user,is_read=False)
-    notification_query = Notification.objects.filter(subscriber=request.user,is_read=False)
-    return JsonResponse({
-        'message_count':message_query.count(),
-        'notification_count':notification_query.count()
-                        })
 
 
 def logout_user(request):

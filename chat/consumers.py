@@ -33,6 +33,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     async def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
+        
         await self.channel_layer.group_send(
             self.room_group_name,{
                 'type':'chat_message',
