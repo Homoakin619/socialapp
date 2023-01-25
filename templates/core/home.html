@@ -99,7 +99,7 @@
             </div>
 
             {% if post.image %} 
-            <img class="image-view-centered update-components-image__image ivm-view-attr__img--centered" src="{{ post.image.url }}" alt="">
+            <img class="view-effect image-view-centered update-components-image__image ivm-view-attr__img--centered" src="{{ post.image.url }}" alt="">
             {% endif %}
 
             <div class="post-footer" {% if post.comment_set.all %} style="justify-content: space-between;" {% else %} style="justify-content: flex-end;" {% endif %}>

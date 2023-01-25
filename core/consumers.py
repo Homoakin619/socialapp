@@ -24,7 +24,8 @@ class RefreshConsumer(AsyncWebsocketConsumer):
     async def receive(self,text_data=None,bytes_data=None):
         data = json.loads(text_data)
         
-        if data['status'] == 'refresh':
+        if data['type'] == 'refresh':
+
             counts = await self.refresh_count()
             messages = counts['message_count']
             notifications = counts['notification_count']
@@ -46,10 +47,25 @@ class RefreshConsumer(AsyncWebsocketConsumer):
                 await self.send(text_data=json.dumps({
                     'message_count':messages,'notification_count':notifications,
                 }))
+        
+        elif data['type'] == 'read':
+            print(data)
+            response = await self.read_message(data['username'])
+
+            if response['response'] == 'success':
+                await self.send(text_data=json.dumps({
+                    'response':'success','user_id':response['user_id'],'message':'Message read successfully'
+                }));
+            else:
+                await self.send(text_data=json.dumps({
+                    'response':'fail','message':'Failed to read message, error occured'
+                }));
+
         else:
+            print(data)
             id = data['id']
-            value = data['value']
-            if value == 'subscribe':
+            action = data['action']
+            if action == 'subscribe':
                 response = await self.subscribe_notification(id)
                 await self.send(text_data=json.dumps({
                     'response':response['response']
@@ -105,3 +121,16 @@ class RefreshConsumer(AsyncWebsocketConsumer):
         subscribe_user = Notify.objects.get(subscriber=self.user,post_creator=creator)
         subscribe_user.delete()
         return {'response':'successfully unsuscribed'}
+
+    @database_sync_to_async
+    def read_message(self,username):
+        try:
+            friend = get_object_or_404(User,username=username)
+            message_instance = Message.objects.filter(receiver=self.user,sender=friend,is_read=False)
+            
+            for message in message_instance:
+                message.is_read = True
+                message.save()
+            return {'response':'success','user_id':friend.id}
+        except:
+            return {'response':'failed'}

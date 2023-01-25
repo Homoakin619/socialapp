@@ -37,7 +37,13 @@
     <input type="text" id="loggedId" value="{{ request.user.id }}" hidden>
     
 <script src="{% static 'core/js/update.js' %}"></script>
-<script src="{% static 'chat/js/chat_script.js' %}"></script>
+<script>var exports = {"__esModule": true};</script>
+<script src="{% static 'core/js/formatter.js' %}" ></script>
+<script src="{% static 'chat/js/chat_script.js' %}" ></script>
+<script>
+    
+</script>
+
 <script src="{% static 'core/js/utility.js' %}" ></script>
 
 {% block extra_script %}
