@@ -8,6 +8,7 @@
 {% block content %} 
 
 <main>
+    
     <section class="content">
         <div class="main-post">
             <div class="main-post-head">
@@ -99,7 +100,9 @@
             </div>
 
             {% if post.image %} 
+            <a class="img_links" href="" data-bs-toggle="modal">
             <img class="view-effect image-view-centered update-components-image__image ivm-view-attr__img--centered" src="{{ post.image.url }}" alt="">
+            </a>
             {% endif %}
 
             <div class="post-footer" {% if post.comment_set.all %} style="justify-content: space-between;" {% else %} style="justify-content: flex-end;" {% endif %}>
@@ -116,8 +119,25 @@
                     <span>Comment</span>
                 </a>
 
-            </div>
+                <div class="modal fade mds" id="" aria-hidden="true" aria-labelledby="0Label" tabindex="-1">
+                    <div class="modal-dialog modal-dialog-centered modal-xl">
+                        <div class="modal-content">
+                        <div class="modal-header">
+                            <span role="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">x</span>
+                        </div>
+                        <div class="modal-body">
+                            {% if post.image %} 
+                            
+                            <img class="view-effect image-view-centered update-components-image__image ivm-view-attr__img--centered" src="{{ post.image.url }}" alt="">
+                            
+                            {% endif %}
+                        </div>
+                        </div>
+                    </div>
+                </div>
 
+            </div>
+           
             <div>
                 <form action="" method="post" class="commentForms">
                     {% csrf_token %}
