@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.shortcuts import render,get_object_or_404
 from django.views import generic
 from django.http import HttpResponseRedirect,JsonResponse
-from django.urls import reverse
+from django.urls import reverse,reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.serializers import serialize 
 
@@ -15,13 +15,16 @@ from core.models import Notification, Post,Comment,Notify
 from core.forms import PostForm,ProfileForm,EditProfileForm,EditProfileImageForm,CommentForm
 
 from authentication.models import Profile
+from authentication.mixins import CheckVerificationMixin
 
 
 import json
 from datetime import date
 
-class IndexView(LoginRequiredMixin,generic.View):
+class IndexView(CheckVerificationMixin,LoginRequiredMixin,generic.View):
     template_name = 'core/home.html'
+    redirect_url = reverse_lazy('not_verified')
+    
     def get(self,request,*args,**kwargs):
         form = PostForm()
         comment_form = CommentForm()
@@ -55,8 +58,10 @@ class IndexView(LoginRequiredMixin,generic.View):
                 return HttpResponseRedirect(reverse('home'))
         return HttpResponseRedirect(reverse('home'))
         
-class EditPostView(generic.View):
+class EditPostView(CheckVerificationMixin,generic.View):
     template_name = 'core/edit_post.html'
+    redirect_url = reverse_lazy('not_verified')
+
     def get(self,request,*args,**kwargs):
         query = get_object_or_404(Post,pk=kwargs['pk'])
         edit_post_form = PostForm(instance=query)
@@ -78,8 +83,10 @@ def delete_post(request,*args,**kwargs):
         return HttpResponseRedirect(reverse('home'))
 
 
-class ProfileView(generic.View):
+class ProfileView(CheckVerificationMixin,generic.View):
     template_name = 'core/profile.html'
+    redirect_url = reverse_lazy('not_verified')
+
     def get(self,request,*args,**kwargs):
         comment_form = CommentForm()
         user = request.user
@@ -164,8 +171,10 @@ class ProfileView(generic.View):
         return render(request,self.template_name)
 
 
-class EditProfileView(generic.View):
+class EditProfileView(CheckVerificationMixin,generic.View):
     template_name = ''
+    redirect_url = reverse_lazy('not_verified')
+
     def get(self,request,*args,**kwargs):
         instance = get_object_or_404(Profile,user=request.user)
         profile_form = ProfileForm(instance=instance)
@@ -181,8 +190,9 @@ class EditProfileView(generic.View):
             return HttpResponseRedirect(reverse('home'))
         return render(request,self.template_name)
 
-class NotificationView(generic.View):
+class NotificationView(CheckVerificationMixin,generic.View):
     template_name = 'core/notifications.html'
+    redirect_url = reverse_lazy('not_verified')
 
     def get(self, request,*args,**kwargs):
         user = request.user
@@ -260,52 +270,9 @@ def change_notification(request):
     notification.save()
     return JsonResponse({'status':'notification viewed'})
 
+def not_verified_view(request):
 
-@csrf_exempt
-def chat_user(request):
-        user_id = request.user.id
-        request_body = json.loads(request.body.decode('utf-8'))
-        name = request_body['name']
-        friend = User.objects.get(username=name)
-    
-        if user_id > friend.id:
-            chat_room = f'chat_{user_id}-{friend.id}'
-        else:
-            chat_room = f'chat_{friend.id}-{user_id}'
-        messages_qs = ChatMessage.objects.filter(chatroom=chat_room).order_by('-id')
-        
-        today_date = date.today()
-        chat_date = ChatDate.objects.all()
-        chat_date = serialize("json",list(chat_date))
-        messages = serialize('json',list(messages_qs))
-        read = read_message(request,name)
-        read = json.loads(read.content)
-        
-        return JsonResponse({
-            'messages':messages,
-            'today_date':today_date,
-            'friend':name,
-            'id':friend.id,
-            'status':read['status'],
-            'chat_date':chat_date
-        })
-
-
-
-@csrf_exempt
-def read_message(request,username):
-    try:
-        # print(username)
-        friend = get_object_or_404(User,username=username)
-        message_instance = Message.objects.filter(receiver=request.user,sender=friend,is_read=False)
-        
-        for message in message_instance:
-            message.is_read = True
-            message.save()
-        return JsonResponse({'status':'success reading message'})
-    except:
-        return JsonResponse({'status':'failed'})
-
+    return render(request,'core/not_verified.html')
 
 def logout_user(request):
     logout(request)

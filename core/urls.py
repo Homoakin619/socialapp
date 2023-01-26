@@ -19,13 +19,13 @@ urlpatterns = [
     path('posts/delete/<int:pk>/',views.delete_post,name='delete_post'),
     path('logout/',views.logout_user,name='logout'),
     path('messages/',views.message_view,name='all_messages'),
-    path('messages/<str:username>/',views.read_message,name='read_message'),
+    # path('messages/<str:username>/',views.read_message,name='read_message'),
     # path('notifications/unread/all/',views.get_counts,name='get_counts'),
 
     path('notification/subscribe/<int:id>/',views.subscribe_notification,name='subscribe_notification'),
     path('notification/disable/<int:id>/',views.disable_notification,name='disable_notification'),
 
-    path('chat_user/',views.chat_user,name='chat_user'),
+    path('verification/failed/',views.not_verified_view,name='not_verified'),
 ]
 
 if settings.DEBUG:
