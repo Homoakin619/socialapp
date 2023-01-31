@@ -36,6 +36,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 DEBUG = True
 ALLOWED_HOSTS = ['*']
 
+MAIL_API_KEY = os.environ.get('MAIL_API_KEY')
+
 CSRF_TRUSTED_ORIGINS = [
     'https://socialapp.up.railway.app',
     'http://localhost:8000',

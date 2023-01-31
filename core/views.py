@@ -1,4 +1,5 @@
-from multiprocessing import context
+from __future__ import print_function
+
 from django.contrib.auth import login,logout
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
@@ -17,11 +18,14 @@ from core.forms import PostForm,ProfileForm,EditProfileForm,EditProfileImageForm
 from authentication.models import Profile
 from authentication.mixins import CheckVerificationMixin
 
+from django.conf import settings
 
 import json
 from datetime import date
 
-class IndexView(CheckVerificationMixin,LoginRequiredMixin,generic.View):
+
+
+class IndexView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
     template_name = 'core/home.html'
     redirect_url = reverse_lazy('not_verified')
     
@@ -29,6 +33,7 @@ class IndexView(CheckVerificationMixin,LoginRequiredMixin,generic.View):
         form = PostForm()
         comment_form = CommentForm()
         user_profile = get_object_or_404(Profile,user=request.user)
+
         context = {'all_posts':Post.objects.filter(tag=user_profile.niche).order_by('-created'),'form':form,'comment_form':comment_form}
         return render(request,self.template_name,context)
 
@@ -58,7 +63,7 @@ class IndexView(CheckVerificationMixin,LoginRequiredMixin,generic.View):
                 return HttpResponseRedirect(reverse('home'))
         return HttpResponseRedirect(reverse('home'))
         
-class EditPostView(CheckVerificationMixin,generic.View):
+class EditPostView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
     template_name = 'core/edit_post.html'
     redirect_url = reverse_lazy('not_verified')
 
@@ -83,7 +88,7 @@ def delete_post(request,*args,**kwargs):
         return HttpResponseRedirect(reverse('home'))
 
 
-class ProfileView(CheckVerificationMixin,generic.View):
+class ProfileView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
     template_name = 'core/profile.html'
     redirect_url = reverse_lazy('not_verified')
 
@@ -171,7 +176,7 @@ class ProfileView(CheckVerificationMixin,generic.View):
         return render(request,self.template_name)
 
 
-class EditProfileView(CheckVerificationMixin,generic.View):
+class EditProfileView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
     template_name = ''
     redirect_url = reverse_lazy('not_verified')
 
@@ -190,7 +195,7 @@ class EditProfileView(CheckVerificationMixin,generic.View):
             return HttpResponseRedirect(reverse('home'))
         return render(request,self.template_name)
 
-class NotificationView(CheckVerificationMixin,generic.View):
+class NotificationView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
     template_name = 'core/notifications.html'
     redirect_url = reverse_lazy('not_verified')
 

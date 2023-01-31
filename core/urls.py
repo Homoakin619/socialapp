@@ -25,7 +25,7 @@ urlpatterns = [
     path('notification/subscribe/<int:id>/',views.subscribe_notification,name='subscribe_notification'),
     path('notification/disable/<int:id>/',views.disable_notification,name='disable_notification'),
 
-    path('verification/failed/',views.not_verified_view,name='not_verified'),
+    path('unverified account/',views.not_verified_view,name='not_verified'),
 ]
 
 if settings.DEBUG:

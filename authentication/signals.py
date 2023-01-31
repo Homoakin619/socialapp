@@ -4,10 +4,6 @@ from django.contrib.auth.models import User
 
 from .models import Profile
 
-#  user to be notified
-#  User that created the post
-#  Post id
-
 
 @receiver(post_save,sender=User)
 def create_profile(sender,instance,created,**kwargs):
