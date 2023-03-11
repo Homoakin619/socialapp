@@ -149,7 +149,7 @@ DEFAULT_FROM_EMAIL = 'Majmaul Uloom Team <noreply@uloom.com>'
 
 
 if not DEBUG:
-    DATABASE_URL = os.environ.get('DATA_URL')
+    DATABASE_URL = os.environ.get('DATABASE_URL')
     
     DATABASES = {
         "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
