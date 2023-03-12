@@ -21,6 +21,7 @@ class RefreshSocketObject {
 
         this.Socket.onclose = function(e) {
             console.log('REFRESH CONNECTION CLOSED')
+            // setTimeout(this.makeconnection(), 1000);
         }
     
         this.Socket.onerror = function(e) {

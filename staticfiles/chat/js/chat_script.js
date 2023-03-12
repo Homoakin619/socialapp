@@ -7,8 +7,6 @@ const submitBtn = document.querySelector('#send-message');
 const messageInput = document.querySelector('#message-input');
 let messages = document.getElementsByClassName('message');
 
-let chat_url = `${window.location.protocol}//${window.location.host}/chat_user/`;
-
 class DateFormatter {
     date;
     constructor(date) {
@@ -21,11 +19,19 @@ class DateFormatter {
     }
 
     formatDate() {
+        
+        let result;
         let obj = this.convertDate();
         let year = obj.getFullYear();
         let month = obj.getMonth()+1;
         let day = obj.getDate();
-        const result = `${year}-${month}-${day}`;
+        let today = new Date();
+        today = today.getDate();
+
+        result = `${year}-${month}-${day}`;
+        if ((today - day)== 1) {
+            result = 'yesterday';
+        }
 
         return result;
     }
@@ -63,50 +69,29 @@ if(friendId) { //User is on profile page of a friend
 
     runSocket(friendId);
 } else {
-    console.log('Not Available');
-    function makeRequest() {
-        const userId = this.id
-        data = {name:userId}
-            fetch(chat_url,{
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(data)
-                })
-                .then((response) => response.json())
-                .then((data) => {
-                    user_space.innerHTML = `${data.friend}`;
-                    let chat_messages = JSON.parse(data.messages);
-                    let dates = JSON.parse(data.chat_date)
-                    let id = data.id;
-                    let chats = displayChats(chat_messages,dates,user);
-                    chatOutput.innerHTML += chats;
-                    chatGround.style.display = 'flex'; 
-                    runSocket(id);
-                })
-        }
-    
-    for (message of messages) {
-            message.addEventListener('click',makeRequest)
+    for (let message of messages) {
+            message.addEventListener('click',function() {
+                this.style.background = 'none'
+                generalSocket.readMessage(this.id)
+                chatGround.style.display = 'flex';         
+            });
         }
 };
 
 
 function runSocket(id) {
-    console.log('this is it ' +id);
     const socket = new WebSocket(
         'wss://' + window.location.host + '/ws/' + id + '/'
     )
     
     socket.onopen = function(e) {
         console.log('CONNECTION ESTABLISHED');
+        // generalSocket.refreshData()
     }
     
     socket.onmessage = function(e) {
         const result = JSON.parse(e.data)
-        generalSocket.sendData(null,null,'refresh')
+        generalSocket.refreshData()
         var date = new Date()
     
         let get_Hour = (date) => {
@@ -170,31 +155,6 @@ if (messageInput){
     }
 }
 
-function runProcess(senderId) {
-    let sender = senderId
-    let read_url = `${window.location.protocol}//${window.location.host}/messages/${sender}/`
-    let data = {value:sender}
-    
-    fetch(read_url, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(data),
-        })
-        .then((response) => response.json() )
-        .then((data) => {
-            
-            console.log('Status:',  data.status);
-            window.location.href = `${window.location.protocol}//${window.location.host}/messages/`
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-        });
-}
-
-
 
 function displayChats(messages,dates,user) {
     let output = '';
@@ -213,7 +173,7 @@ function displayChats(messages,dates,user) {
             formatter.date = timeInstance;
             let messageDate = formatter.formatDate();
     
-            // console.log(`ChatDate is => ${dateIns} : MessageDate is => ${messageDate}`)
+
             if (dateIns == messageDate) {
                 
                 if (message['fields']['sender'] == user) {

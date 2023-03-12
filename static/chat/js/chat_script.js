@@ -81,7 +81,7 @@ if(friendId) { //User is on profile page of a friend
 
 function runSocket(id) {
     const socket = new WebSocket(
-        'ws://' + window.location.host + '/ws/' + id + '/'
+        'wss://' + window.location.host + '/ws/' + id + '/'
     )
     
     socket.onopen = function(e) {
