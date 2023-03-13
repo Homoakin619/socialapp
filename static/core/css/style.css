@@ -257,7 +257,7 @@ textarea {
 }
 
 .showcomment,.hide-comment {
-    color: #332424;
+    color: rgb(246, 87, 59);
     cursor: pointer;
 }
 
@@ -403,7 +403,7 @@ select {
     flex-direction: row;
 }
 
-#id_image {
+#id_image,#post_img {
     display: none;
 }
 

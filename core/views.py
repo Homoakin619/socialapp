@@ -1,4 +1,4 @@
-from __future__ import print_function
+# from __future__ import print_function
 
 from django.contrib.auth import login,logout
 from django.views.decorators.csrf import csrf_exempt
@@ -99,7 +99,7 @@ class ProfileView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
         user_profile = get_object_or_404(Profile,user=profile)
         profile_form = EditProfileForm(instance=user_profile)
         image_form = EditProfileImageForm(request.FILES,instance=user_profile)
-        form = PostForm()
+        form = PostForm(request.FILES)
         posts = Post.objects.filter(user=profile)
         all_posts = Post.objects.filter(tag=user_profile.niche).exclude(user=profile)
         activities = profile.post_set.all()
@@ -136,7 +136,7 @@ class ProfileView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
         user = request.user
         user_profile = get_object_or_404(Profile,user=user)
         profile_form = EditProfileForm(request.POST,instance=user_profile)
-        form = PostForm(request.POST)
+        form = PostForm(request.POST,request.FILES)
         comment_form = CommentForm(request.POST)
         image_form = EditProfileImageForm(request.POST,request.FILES,instance=user_profile)
         profile = request.POST.get('profile')
@@ -172,7 +172,7 @@ class ProfileView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
                 post_form = form.save(commit=False)
                 post_form.user = request.user
                 post_form.save()
-                return reverse('profile',kwargs={'pk':kwargs['pk']})
+                return HttpResponseRedirect(reverse('profile',kwargs={'pk':kwargs['pk']}))
         return render(request,self.template_name)
 
 

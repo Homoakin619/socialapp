@@ -25,7 +25,8 @@ class EditProfileImageForm(forms.ModelForm):
 
 class PostForm(forms.ModelForm):
     content = forms.CharField(widget=forms.Textarea(attrs={"placeholder":"Content goes here ...."}))
-    # image = forms.ImageField(widget=forms.FileInput())
+    
+    image = forms.ImageField(widget=forms.FileInput(attrs={"id":"post_img"}))
     class Meta:
         model = Post
         fields = ('content','tag','image')

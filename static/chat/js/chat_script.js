@@ -132,6 +132,7 @@ function runSocket(id) {
     socket.onerror = function(e) {
         console.log('ERROR IN CONNECTON')
         console.log(e)
+        setTimeout(runSocket(id),1000)
     }
 
 

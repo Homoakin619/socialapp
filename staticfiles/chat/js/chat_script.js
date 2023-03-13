@@ -81,7 +81,7 @@ if(friendId) { //User is on profile page of a friend
 
 function runSocket(id) {
     const socket = new WebSocket(
-        'wss://' + window.location.host + '/ws/' + id + '/'
+        'ws://' + window.location.host + '/ws/' + id + '/'
     )
     
     socket.onopen = function(e) {
@@ -132,6 +132,7 @@ function runSocket(id) {
     socket.onerror = function(e) {
         console.log('ERROR IN CONNECTON')
         console.log(e)
+        setTimeout(runSocket(id),1000)
     }
 
 

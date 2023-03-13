@@ -4,6 +4,15 @@
     padding: 0;
 }
 
+a {
+    color: #212529;
+    text-decoration: none;
+}
+
+.name p {
+    margin-bottom: 0;
+}
+
 @font-face {
     font-family: 'Roboto';
     src: url('/static/core/fonts/Roboto-Black-webfont') format('woff');
@@ -34,6 +43,10 @@ body {
     align-items: center;
     z-index: 6;
  }
+
+ .post .notifications a:hover {
+    color: #f1f1f1;
+  }
 
 .user {
     display: flex;
@@ -72,7 +85,7 @@ main {
 
 .main-post {
     margin-bottom: 20px;
-    /* border: none; */
+    margin-top: 10px;
 }
 
 .def-image {
@@ -122,7 +135,7 @@ main {
     padding: 0;
     box-shadow: -7px 7px 18px 6px rgb(255 255 255), 0em 0em 1em 0px rgb(0 0 0 / 30%);
 }
-
+ 
 .post-head,.post-body,.post-footer {
     padding: 20px;
 }
@@ -130,10 +143,7 @@ main {
 .post-body {
     margin-top: -5px;
     padding-top: 0;
-}
-
-.post .name {
-    margin-top: 5px;
+    padding-bottom: 10px;
 }
 
 .post > .post-footer {
@@ -158,6 +168,10 @@ main {
     margin-top: 10px;
 }
 
+.image-preview {
+    display: none;
+    background: rgba(0, 0, 0, 0.08);
+}
 
 
 .line {
@@ -243,7 +257,7 @@ textarea {
 }
 
 .showcomment,.hide-comment {
-    color: #332424;
+    color: rgb(246, 87, 59);
     cursor: pointer;
 }
 
@@ -803,4 +817,3 @@ select {
     }
     
 }
-
