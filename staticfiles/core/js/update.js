@@ -17,7 +17,7 @@ class RefreshSocketObject {
 
     makeconnection() {
         
-        this.Socket = new WebSocket('ws://'+window.location.host +'/ws/refresh/'+Id+'/');
+        this.Socket = new WebSocket('wss://'+window.location.host +'/ws/refresh/'+Id+'/');
 
         this.Socket.onclose = function(e) {
             console.log('REFRESH CONNECTION CLOSED')

@@ -403,7 +403,7 @@ select {
     flex-direction: row;
 }
 
-#id_image {
+#id_image,#post_img {
     display: none;
 }
 
