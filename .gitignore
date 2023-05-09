@@ -3,3 +3,4 @@ __pycache__/
 *.env
 mysite.log
 media/
+pyfile.py

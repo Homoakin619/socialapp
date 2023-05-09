@@ -113,7 +113,11 @@ TEMPLATES = [
 ]
 
 
-REDIS_URL = os.environ.get('REDIS_URL')
+REDIS_USER = os.environ.get('REDIS_USER')
+REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD')
+REDIS_HOST = os.environ.get('REDIS_HOST')
+REDIS_PORT = os.environ.get('REDIS_PORT')
+
 
 # WSGI_APPLICATION = 'web_app.wsgi.application'
 ASGI_APPLICATION = 'web_app.asgi.application'
@@ -123,7 +127,13 @@ ASGI_APPLICATION = 'web_app.asgi.application'
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 
-DATABASE_URL = os.environ.get('DATABASE_URL')
+
+DATABASE_USER = os.environ.get('DATABASE_USER')
+DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD')
+DATABASE_HOST = os.environ.get('DATABASE_HOST')
+DATABASE_PORT = os.environ.get('DATABASE_PORT')
+DATABASE_NAME = os.environ.get('DATABASE_NAME')
+DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
 DATABASES = {
     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),
@@ -133,7 +143,7 @@ CHANNEL_LAYERS = {
     'default':{
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG':{
-            'hosts': [REDIS_URL,]
+            'hosts': [f"redis://{REDIS_USER}:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}",]
         }
     }
 }
