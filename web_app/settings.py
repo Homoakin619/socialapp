@@ -113,10 +113,10 @@ TEMPLATES = [
 ]
 
 
-REDIS_USER = os.environ.get('REDIS_USER')
-REDIS_PASSWORD = os.environ.get('REDIS_PASSWORD')
-REDIS_HOST = os.environ.get('REDIS_HOST')
-REDIS_PORT = os.environ.get('REDIS_PORT')
+REDIS_USER = os.environ.get('REDISUSER')
+REDIS_PASSWORD = os.environ.get('REDISPASSWORD')
+REDIS_HOST = os.environ.get('REDISHOST')
+REDIS_PORT = os.environ.get('REDISPORT')
 
 
 # WSGI_APPLICATION = 'web_app.wsgi.application'
@@ -128,11 +128,11 @@ ASGI_APPLICATION = 'web_app.asgi.application'
 
 
 
-DATABASE_USER = os.environ.get('DATABASE_USER')
-DATABASE_PASSWORD = os.environ.get('DATABASE_PASSWORD')
-DATABASE_HOST = os.environ.get('DATABASE_HOST')
-DATABASE_PORT = os.environ.get('DATABASE_PORT')
-DATABASE_NAME = os.environ.get('DATABASE_NAME')
+DATABASE_USER = os.environ.get('PGUSER')
+DATABASE_PASSWORD = os.environ.get('PGPASSWORD')
+DATABASE_HOST = os.environ.get('PGHOST')
+DATABASE_PORT = os.environ.get('PGPORT')
+DATABASE_NAME = os.environ.get('PGDATABASE')
 DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
 
 DATABASES = {
