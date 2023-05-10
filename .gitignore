@@ -3,4 +3,5 @@ __pycache__/
 *.env
 mysite.log
 media/
+sent_emails/
 pyfile.py

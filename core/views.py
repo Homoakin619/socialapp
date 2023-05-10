@@ -195,6 +195,7 @@ class EditProfileView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
             return HttpResponseRedirect(reverse('home'))
         return render(request,self.template_name)
 
+
 class NotificationView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
     template_name = 'core/notifications.html'
     redirect_url = reverse_lazy('not_verified')
@@ -205,7 +206,6 @@ class NotificationView(LoginRequiredMixin,CheckVerificationMixin,generic.View):
         context = {'notifications':my_notifications}
         
         return render(request,self.template_name,context)
-
 
 
 def subscribe_notification(request,id):
@@ -228,7 +228,6 @@ def message_view(request):
     messages = Message.objects.filter(receiver=request.user)
     context = {'messages':messages}
     return render(request,'core/messages.html',context)
-
 
 
 def create_comment(request,form):

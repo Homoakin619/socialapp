@@ -17,7 +17,7 @@ class RefreshSocketObject {
 
     makeconnection() {
         
-        this.Socket = new WebSocket('wss://'+window.location.host +'/ws/refresh/'+Id+'/');
+        this.Socket = new WebSocket('ws://'+window.location.host +'/ws/refresh/'+Id+'/');
 
         this.Socket.onclose = function(e) {
             console.log('REFRESH CONNECTION CLOSED')
@@ -37,18 +37,17 @@ class RefreshSocketObject {
             if(friendId) {
                 
                 socket.send(JSON.stringify({'type':'refresh','friend_id':friendId}));
-
-                socket.onmessage = function(e) {
-                    
+                
+                socket.onmessage = function(e) {  
                     let returned_data = JSON.parse(e.data);
                     
                     let messageCount = returned_data.message_count;
                     let NotificationCount = returned_data.notification_count;
                     chatHistory = returned_data.chat_history;
                     chatDates = returned_data.chat_dates;
-    
-                    let chats_history = displayChats(chatHistory,chatDates,user);
-                    chatOutput.innerHTML += chats_history;
+                    console.log(chatHistory);
+                    let chats_history = displayChats(chatHistory.reverse(),chatDates,user);
+                    chatOutput.innerHTML = chats_history;
                     friendUsername = returned_data.friend_username;
                     
                     messagesCount.innerHTML = messageCount;
@@ -87,18 +86,20 @@ class RefreshSocketObject {
         } // makeconnection() ends here
         
 
-    refreshData(id=null) {
-                
+    refreshData(id=null) {        
         if(friendId) {
             this.Socket.send(JSON.stringify({'type':'refresh','friend_id':friendId}))
 
             this.Socket.onmessage = function(e) {
+                   
                 let returned_data = JSON.parse(e.data);
                 chatHistory = returned_data.chat_history;
+                
                 chatDates = returned_data.chat_dates;
                 friendUsername = returned_data.friend_username;
-                let chats_history = displayChats(chatHistory,chatDates,user);
-                chatOutput.innerHTML += chats_history;
+                let chats_history = displayChats(chatHistory.reverse(),chatDates,user);
+                chatOutput.innerHTML = chats_history;
+                chatOutput.scrollTop = chatOutput.scrollHeight;
                 let messageCount = returned_data.message_count;
                 let NotificationCount = returned_data.notification_count;
                 
@@ -121,8 +122,9 @@ class RefreshSocketObject {
                 chatHistory = returned_data.chat_history;
                 chatDates = returned_data.chat_dates;
                 friendUsername = returned_data.friend_username;
-                let chats_history = displayChats(chatHistory,chatDates,user);
-                chatOutput.innerHTML += chats_history;
+                let chats_history = displayChats(chatHistory.reverse(),chatDates,user);
+                
+                chatOutput.innerHTML = chats_history;
                 
                 let messageCount = returned_data.message_count;
                 let NotificationCount = returned_data.notification_count;
@@ -133,7 +135,6 @@ class RefreshSocketObject {
                 notificationsCount.innerHTML = NotificationCount;
                 notifCount.innerHTML = NotificationCount;
                 
-        
                 if(user_space){
                     user_space.innerHTML = friendUsername;
                     }
@@ -153,8 +154,7 @@ class RefreshSocketObject {
                 notifCount.innerHTML = NotificationCount;
                 }
         }
-    
-        }   // refreshData ends here..
+    }   // refreshData ends here..
 
     subscribeNotification(profile_id=null,action=null) {
         this.Socket.send(JSON.stringify({

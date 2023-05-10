@@ -81,12 +81,11 @@ if(friendId) { //User is on profile page of a friend
 
 function runSocket(id) {
     const socket = new WebSocket(
-        'wss://' + window.location.host + '/ws/' + id + '/'
+        'ws://' + window.location.host + '/ws/' + id + '/'
     )
     
     socket.onopen = function(e) {
         console.log('CONNECTION ESTABLISHED');
-        // generalSocket.refreshData()
     }
     
     socket.onmessage = function(e) {
@@ -106,27 +105,8 @@ function runSocket(id) {
                 period = 'am'
             }
             return {'time':result1,'period':period}
-        }
-    
-        if (result.username == user) {
-            chatOutput.innerHTML += `
-                <div class="message end">
-                    <div class="right">
-                        <span>${result.message}</span>
-                        <small>${get_Hour(date).time}:${date.getMinutes()} ${get_Hour(date).period}</small>
-                    </div>
-                </div>
-                    `
-        }else{
-            chatOutput.innerHTML += `
-                <div class="message ">
-                    <div class="left">
-                        <span>${result.message}</span>
-                        
-                    </div>
-                </div>`
-        }
-        chatOutput.scrollTop = chatOutput.scrollHeight;
+        }        
+        
     }
     
     socket.onerror = function(e) {
@@ -163,17 +143,14 @@ function displayChats(messages,dates,user) {
     const dateFormatter = new DateFormatter()
     for (let date of dates) {
         let dateIns;
-
         dateFormatter.date = date['fields']['timestamp'];
         dateIns = dateFormatter.formatDate()
-    
         output += `<h5 class="divider line one-line" >${dateIns} </h5>`;
 
         for(let message of messages) {
             let timeInstance = message['fields']['timestamp'];
             formatter.date = timeInstance;
             let messageDate = formatter.formatDate();
-    
 
             if (dateIns == messageDate) {
                 
@@ -181,7 +158,7 @@ function displayChats(messages,dates,user) {
                     output += `
                         <div class="message end">
                             <div class="right">
-                            <span>${ message['fields']['message'] }</span>
+                            <span>${ message['fields']['message'] } </span>
                             <small>${ formatter.formatTime() }</small>
                             </div>
                         </div>`;
