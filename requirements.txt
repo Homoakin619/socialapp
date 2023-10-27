@@ -11,3 +11,4 @@ Pillow==7.0.0
 psycopg2==2.9.5
 cloudinary
 django-cloudinary-storage==0.3.0
+twisted>=23.10.0rc1 # not directly required, pinned by Snyk to avoid a vulnerability
