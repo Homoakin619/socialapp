@@ -1,6 +1,7 @@
+{% if request.user.is_authenticated %}
 <header id="general-header">
     <nav class="navigation">
-        {% if request.user.is_authenticated %}
+        
 
         {% if user.profile.image %}
             <div class="user">
@@ -71,7 +72,7 @@
             </a>
             
         </div>
-        {% endif %}
+        
     </nav>
 </header>
 <script>
@@ -94,3 +95,4 @@
         
     }
 </script>
+{% endif %}

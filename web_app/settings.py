@@ -117,7 +117,7 @@ REDIS_USER = os.environ.get('REDISUSER')
 REDIS_PASSWORD = os.environ.get('REDISPASSWORD')
 REDIS_HOST = os.environ.get('REDISHOST')
 REDIS_PORT = os.environ.get('REDISPORT')
-
+REDIS_URL = os.environ.get("REDIS_URL");
 
 # WSGI_APPLICATION = 'web_app.wsgi.application'
 ASGI_APPLICATION = 'web_app.asgi.application'
@@ -143,7 +143,7 @@ CHANNEL_LAYERS = {
     'default':{
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG':{
-            'hosts': [f"redis://{REDIS_USER}:{REDIS_PASSWORD}@{REDIS_HOST}:{REDIS_PORT}",]
+            'hosts': [f"{REDIS_URL}",]
         }
     }
 }
