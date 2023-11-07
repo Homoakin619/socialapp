@@ -156,39 +156,39 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = 'Majmaul Uloom Team <noreply@uloom.com>'
 
-LOGGING = {
-        'version': 1,
-        'disable_existing_loggers': True,
-        'formatters': {
-            'verbose': {
-                'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
-                'datefmt' : "%d/%b/%Y %H:%M:%S"
-            },
-            'simple': {
-                'format': '%(levelname)s %(message)s'
-            },
-        },
-        'handlers': {
-            'file': {
-                'level': 'DEBUG',
-                'class': 'logging.FileHandler',
-                # 'filters': ['require_debug_false'],
-                'filename': 'mysite.log',
-                'formatter': 'verbose'
-            },
-        },
-        'loggers': {
-            'django': {
-                'handlers':['file'],
-                'propagate': True,
-                'level':'DEBUG',
-            },
-            'MYAPP': {
-                'handlers': ['file'],
-                'level': 'DEBUG',
-            },
-        }
-    }
+# LOGGING = {
+#         'version': 1,
+#         'disable_existing_loggers': True,
+#         'formatters': {
+#             'verbose': {
+#                 'format' : "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+#                 'datefmt' : "%d/%b/%Y %H:%M:%S"
+#             },
+#             'simple': {
+#                 'format': '%(levelname)s %(message)s'
+#             },
+#         },
+#         'handlers': {
+#             'file': {
+#                 'level': 'DEBUG',
+#                 'class': 'logging.FileHandler',
+#                 # 'filters': ['require_debug_false'],
+#                 'filename': 'mysite.log',
+#                 'formatter': 'verbose'
+#             },
+#         },
+#         'loggers': {
+#             'django': {
+#                 'handlers':['file'],
+#                 'propagate': True,
+#                 'level':'DEBUG',
+#             },
+#             'MYAPP': {
+#                 'handlers': ['file'],
+#                 'level': 'DEBUG',
+#             },
+#         }
+#     }
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
