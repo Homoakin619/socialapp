@@ -30,7 +30,7 @@ body {
 
 .navigation {
     color: #fff;
-    /* background: tomato; */
+    background: tomato;
     min-height: 60px;
     padding: 0 50px;
     position: fixed;

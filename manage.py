@@ -6,7 +6,7 @@ import sys
 
 def main():
     """Run administrative tasks."""
-    DEVELOPMENT = True
+    DEVELOPMENT = False
     if DEVELOPMENT:
         os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'web_app.production_settings')
     else:
