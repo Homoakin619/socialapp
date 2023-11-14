@@ -1,4 +1,4 @@
-{% extends "account/base.html" %}
+{% extends "account/guest_base.html" %}
 {% load static %}
 {% load i18n %}
 {% load account %}
@@ -6,23 +6,51 @@
 {% block head_title %}{% trans "Confirm E-mail Address" %}{% endblock %}
 {% block extra_head %} 
   <link rel="stylesheet" href="{% static 'core/css/home.css' %}">
-
+    
   <style>
-    .cen {
-        width: 650px;
+    .confirm_modal {
+        width: 550px;
+        height: auto;
         margin: auto;
+        border-radius: 12px;
         padding: 30px 30px;
         background: #f1f1f1;
         position: absolute;
-        top: 25%;
-        left: 25%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
     }
+
+    #confirm_button {
+        width: 100%;
+        background-color: tomato;
+        border: none;
+        outline: none;
+        padding: 15px 0;
+        border-radius: 12px;
+        color: #f1f1f1;
+        font-weight: bold;
+    }
+
+    #confirm_button:hover {
+        background-color: rgb(250, 114, 90);
+        cursor: pointer;
+    }
+
+    .mt-2 {
+        margin-top: 20px;
+    }
+
     form {
-        width: 70%;
-        margin-top: 40px;
+        width: 100%;
+        margin-top: 30px;
+        padding: 0;
+        background: none;
+        box-shadow: none;
     }
     main {
         color: #000;
+        /* position: relative; */
     }
   </style>
 {% endblock %}
@@ -32,18 +60,20 @@
     <header class="index_nav">
         <a href="" class="brand">MAJMAU-L-ULOOM</a>
     </header>
-    <div class="cen">
+
+    <div class="confirm_modal">
         <h1>{% trans "Confirm E-mail Address" %}</h1>
 
         {% if confirmation %}
 
         {% user_display confirmation.email_address.user as user_display %}
 
-        <p>{% blocktrans with confirmation.email_address.email as email %}Please confirm that <a href="mailto:{{ email }}">{{ email }}</a> is an e-mail address for user {{ user_display }}.{% endblocktrans %}</p>
+        <p class="mt-2">{% blocktrans with confirmation.email_address.email as email %}Please confirm that <b> <i>{{ email }}</i></b> belongs to user {{ user_display }}.{% endblocktrans %}</p>
+        <p class="mt-2"> Click the button below to confirm</p>
 
         <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
         {% csrf_token %}
-            <button type="submit">{% trans 'Confirm' %}</button>
+            <button id="confirm_button" type="submit">{% trans 'Confirm' %}</button>
         </form>
 
         {% else %}

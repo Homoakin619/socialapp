@@ -31,7 +31,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 
 ALLOWED_HOSTS = ['*']
@@ -128,12 +128,12 @@ ASGI_APPLICATION = 'web_app.asgi.application'
 
 
 
-DATABASE_USER = os.environ.get('PGUSER')
-DATABASE_PASSWORD = os.environ.get('PGPASSWORD')
-DATABASE_HOST = os.environ.get('PGHOST')
-DATABASE_PORT = os.environ.get('PGPORT')
-DATABASE_NAME = os.environ.get('PGDATABASE')
-DATABASE_URL = f"postgresql://{DATABASE_USER}:{DATABASE_PASSWORD}@{DATABASE_HOST}:{DATABASE_PORT}/{DATABASE_NAME}"
+# DATABASE_USER = os.environ.get('PGUSER')
+# DATABASE_PASSWORD = os.environ.get('PGPASSWORD')
+# DATABASE_HOST = os.environ.get('PGHOST')
+# DATABASE_PORT = os.environ.get('PGPORT')
+# DATABASE_NAME = os.environ.get('PGDATABASE')
+DATABASE_URL = os.environ.get('DATABASE_URL')
 
 DATABASES = {
     "default": dj_database_url.config(default=DATABASE_URL, conn_max_age=1800),

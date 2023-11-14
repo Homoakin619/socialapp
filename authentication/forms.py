@@ -15,6 +15,7 @@ class UserRegistrationForm(SignupForm):
         }))
 
     def save(self,request):
+        print(self.cleaned_data)
         first_name = self.cleaned_data.pop('first_name')
         last_name = self.cleaned_data.pop('last_name')
         user = super(UserRegistrationForm,self).save(request)

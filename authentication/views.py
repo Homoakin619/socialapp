@@ -1,3 +1,9 @@
 from django.shortcuts import render
 
-# Create your views here.
+from .forms import UserRegistrationForm
+
+def loginUser(request):
+    if request.method == "POST":
+        loginForm = UserRegistrationForm(request.POST)
+        print(loginForm)
+    return 1;
