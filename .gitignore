@@ -2,7 +2,9 @@ __pycache__/
 *.sqlite3
 *.env
 mysite.log
+temp_auto_push.bat
 media/
 sent_emails/
 pyfile.py
 .gitignore
+branch_structure.json
