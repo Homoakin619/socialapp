@@ -10,3 +10,4 @@ whitenoise==5.3.0
 Pillow==7.0.0
 cloudinary
 django-cloudinary-storage==0.3.0
+twisted>=24.7.0rc1 # not directly required, pinned by Snyk to avoid a vulnerability
